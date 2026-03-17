@@ -1,0 +1,121 @@
+spring:
+  application:
+    name: hotel-management
+  main:
+    web-application-type: servlet
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/hotel-management
+
+    redis:
+      host: localhost
+      port: 6379
+
+  # EMAIL (GMAIL SMTP) CONFIGURATION
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: karakatanakien@gmail.com
+    password: "ekyi vqyx hrjs rlla"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connection-timeout: 5000
+          timeout: 5000
+          write-timeout: 5000
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 1080642194074-05l6oukl5dvr1j6m0o65fsrt1o5b6bq4.apps.googleusercontent.com
+
+
+          facebook:
+            client-id: 1890280101695649
+
+
+          github:
+            client-id: Ov23lir35wXN8O94ZgzN
+            client-secret: 5c1572cfd217eab18f284fc6ea119193f6c27d34
+
+
+  # ASYNC / THREAD POOL CONFIGURATION
+  task:
+    execution:
+      pool:
+        core-size: 2
+        max-size: 5
+        queue-capacity: 100
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 50MB
+
+
+# LOGGING CONFIGURATION
+logging:
+  level:
+    com.bean.hotel_management: DEBUG
+    org.springframework.security: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# SERVER CONFIGURATION
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+
+# CUSTOM APPLICATION CONFIGURATION
+app:
+
+  # ---------------- JWT CONFIGURATION ----------------
+  jwt:
+    secret: "Ab17031991@icomefromHanoicityandIloveyouWhatdoyoumeanAhihihi123"
+    expiration: 86400000              # Access token (24h)
+    refresh-expiration: 604800000     # Refresh token (7 ng�y)
+
+  frontend:
+    url: http://localhost:5173/       # URL frontend (dev)
+    # url: https://moonelia.site/      # URL frontend (prod)
+
+  verification:
+    token:
+      expiration: 86400000            # Token x�c th?c email (24h)
+
+  reset:
+    token:
+      expiration: 36000000            # Token reset m?t kh?u (1h)
+
+  upload:
+    max-file-size: 50485760       # 5MB
+    allowed-extensions: ".jpg,.jpeg,.png,.gif,.pdf,.webp"
+    default-folder: hotel_management
+    quality: auto:good
+    auto-format: true
+
+  # TEST MODE
+  test:
+    mode: false
+
+# DEFAULT ADMIN ACCOUNT
+hotel:
+  admin:
+    email: admin@gmail.com
+    password: "Admin123@"
+    username: admin
+
+# CLOUDINARY CONFIGURATION
+cloudinary:
+  cloud-name: dip29tjll
+  api-key: 169528795191882
+  api-secret: "K00VsLFLK5Ldtoxne7Hy7XbBe4w"
