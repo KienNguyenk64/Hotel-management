@@ -40,6 +40,7 @@ import { Loader2 } from 'lucide-react';
 
 
 import ZaloButton from './components/Zalo'; 
+import ChatbotItems from './components/ChatbotItems';
 // ScrollToTop Component
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -61,7 +62,7 @@ const PublicLayout: React.FC = () => {
       </main>
       <Footer />
       {/* Global Widgets */}
-      <ChatbotWidget />
+      <ChatbotItems />
       <ZaloButton />
       <BackToTop />
     </div>
@@ -233,5 +234,4 @@ const App: React.FC = () => {
     </AuthProvider>
   );
 };
-
 export default App;
