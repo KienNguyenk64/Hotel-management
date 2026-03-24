@@ -551,10 +551,9 @@ export interface BlogPost {
 export const BLOG_POSTS: BlogPost[] = [
   {
     id: "1",
-    title: "Top 5 bãi biển hoang sơ gần Moon Palace",
-    excerpt: "Khám phá những viên ngọc ẩn giấu.",
-    image:
-      "https://images.unsplash.com/photo-1519046904884-53103b34b271?q=80&w=2070&auto=format&fit=crop",
+    title: "Top 5 bãi biển hoang sơ gần Moon",
+    excerpt: "Khám phá những viên ngọc ẩn giấu.", 
+    image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     date: "15/10/2023",
     author: "Sarah Jenkins",
     category: "Du lịch",
@@ -576,7 +575,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Những bí quyết giúp bạn tiết kiệm chi phí nhưng vẫn có trải nghiệm tuyệt vời.",
     image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
     category: "Kinh nghiệm",
-    date: "22/03/2026",
+    date: "22/03/2025",
     author: "Admin",
   },
   {
@@ -586,7 +585,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Thiết kế tối giản, tinh tế đang là xu hướng được nhiều khách sạn áp dụng.",
     image: "https://images.unsplash.com/photo-1590490360182-c33d57733427",
     category: "Thiết kế",
-    date: "20/03/2026",
+    date: "20/03/2022",
     author: "Admin",
   },
 ];
