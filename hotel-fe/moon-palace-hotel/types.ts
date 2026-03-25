@@ -1,13 +1,13 @@
 export enum Role {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-  STAFF = 'STAFF'
+  ADMIN = "ADMIN",
+  USER = "USER",
+  STAFF = "STAFF",
 }
 
 export interface UserPreferences {
   roomTemperature?: string;
-  pillowType?: 'Soft' | 'Firm' | 'Feather' | 'Hypoallergenic';
-  floorPreference?: 'Low' | 'High' | 'Ground';
+  pillowType?: "Soft" | "Firm" | "Feather" | "Hypoallergenic";
+  floorPreference?: "Low" | "High" | "Ground";
   dietaryRestrictions?: string;
   specialRequests?: string;
 }
@@ -24,7 +24,7 @@ export interface User {
   isLocked?: boolean;
   isActive?: boolean;
   avatarUrl?: string;
-  createdDate?: string; 
+  createdDate?: string;
   preferences?: UserPreferences;
 }
 
@@ -32,7 +32,7 @@ export interface UserFilterParams {
   page?: number;
   size?: number;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
   keyword?: string;
   role?: string;
   isActive?: boolean;
@@ -48,83 +48,81 @@ export interface ResetPasswordRequest {
 // --- Room Management Types ---
 
 export enum RoomType {
-  STANDARD = 'STANDARD',
-  SUPERIOR = 'SUPERIOR',
-  DELUXE = 'DELUXE',
-  SUITE = 'SUITE',
-  EXECUTIVE = 'EXECUTIVE',
-  PRESIDENTIAL = 'PRESIDENTIAL',
-  FAMILY = 'FAMILY',
-  HONEYMOON = 'HONEYMOON'
+  STANDARD = "STANDARD",
+  SUPERIOR = "SUPERIOR",
+  DELUXE = "DELUXE",
+  SUITE = "SUITE",
+  EXECUTIVE = "EXECUTIVE",
+  PRESIDENTIAL = "PRESIDENTIAL",
+  FAMILY = "FAMILY",
+  HONEYMOON = "HONEYMOON",
 }
 
 export enum RoomStatus {
-  AVAILABLE = 'AVAILABLE',
-  OCCUPIED = 'OCCUPIED',
-  RESERVED = 'RESERVED',
-  MAINTENANCE = 'MAINTENANCE',
-  CLEANING = 'CLEANING',
-  OUT_OF_SERVICE = 'OUT_OF_SERVICE'
+  AVAILABLE = "AVAILABLE",
+  OCCUPIED = "OCCUPIED",
+  RESERVED = "RESERVED",
+  MAINTENANCE = "MAINTENANCE",
+  CLEANING = "CLEANING",
+  OUT_OF_SERVICE = "OUT_OF_SERVICE",
 }
 
 export enum RoomView {
-  CITY = 'CITY',
-  SEA = 'SEA',
-  GARDEN = 'GARDEN',
-  POOL = 'POOL',
-  MOUNTAIN = 'MOUNTAIN',
-  COURTYARD = 'COURTYARD',
-  NO_VIEW = 'NO_VIEW'
+  CITY = "CITY",
+  SEA = "SEA",
+  GARDEN = "GARDEN",
+  POOL = "POOL",
+  MOUNTAIN = "MOUNTAIN",
+  COURTYARD = "COURTYARD",
+  NO_VIEW = "NO_VIEW",
 }
 
 export enum BedType {
-  SINGLE = 'SINGLE',
-  DOUBLE = 'DOUBLE',
-  QUEEN = 'QUEEN',
-  KING = 'KING',
-  TWIN = 'TWIN',
-  BUNK = 'BUNK'
+  SINGLE = "SINGLE",
+  DOUBLE = "DOUBLE",
+  QUEEN = "QUEEN",
+  KING = "KING",
+  TWIN = "TWIN",
+  BUNK = "BUNK",
 }
 
 export const RoomTypeDisplay: Record<RoomType, string> = {
-  [RoomType.STANDARD]: 'Phòng tiêu chuẩn',
-  [RoomType.SUPERIOR]: 'Phòng cao cấp',
-  [RoomType.DELUXE]: 'Phòng sang trọng',
-  [RoomType.SUITE]: 'Phòng Suite',
-  [RoomType.EXECUTIVE]: 'Phòng điều hành',
-  [RoomType.PRESIDENTIAL]: 'Phòng Tổng thống',
-  [RoomType.FAMILY]: 'Phòng gia đình',
-  [RoomType.HONEYMOON]: 'Phòng tân hôn'
+  [RoomType.STANDARD]: "Phòng tiêu chuẩn",
+  [RoomType.SUPERIOR]: "Phòng cao cấp",
+  [RoomType.DELUXE]: "Phòng sang trọng",
+  [RoomType.SUITE]: "Phòng Suite",
+  [RoomType.EXECUTIVE]: "Phòng điều hành",
+  [RoomType.PRESIDENTIAL]: "Phòng Tổng thống",
+  [RoomType.FAMILY]: "Phòng gia đình",
+  [RoomType.HONEYMOON]: "Phòng tân hôn",
 };
 
 export const RoomStatusDisplay: Record<RoomStatus, string> = {
-  [RoomStatus.AVAILABLE]: 'Còn trống',
-  [RoomStatus.OCCUPIED]: 'Đang có khách',
-  [RoomStatus.RESERVED]: 'Đã đặt trước',
-  [RoomStatus.MAINTENANCE]: 'Đang bảo trì',
-  [RoomStatus.CLEANING]: 'Đang dọn dẹp',
-  [RoomStatus.OUT_OF_SERVICE]: 'Ngừng hoạt động'
+  [RoomStatus.AVAILABLE]: "Còn trống",
+  [RoomStatus.OCCUPIED]: "Đang có khách",
+  [RoomStatus.RESERVED]: "Đã đặt trước",
+  [RoomStatus.MAINTENANCE]: "Đang bảo trì",
+  [RoomStatus.CLEANING]: "Đang dọn dẹp",
+  [RoomStatus.OUT_OF_SERVICE]: "Ngừng hoạt động",
 };
 
-
-
 export const RoomViewDisplay: Record<RoomView, string> = {
-  [RoomView.CITY]: 'View thành phố',
-  [RoomView.SEA]: 'View biển',
-  [RoomView.GARDEN]: 'View vườn',
-  [RoomView.POOL]: 'View hồ bơi',
-  [RoomView.MOUNTAIN]: 'View núi',
-  [RoomView.COURTYARD]: 'View sân trong',
-  [RoomView.NO_VIEW]: 'Không có view'
+  [RoomView.CITY]: "View thành phố",
+  [RoomView.SEA]: "View biển",
+  [RoomView.GARDEN]: "View vườn",
+  [RoomView.POOL]: "View hồ bơi",
+  [RoomView.MOUNTAIN]: "View núi",
+  [RoomView.COURTYARD]: "View sân trong",
+  [RoomView.NO_VIEW]: "Không có view",
 };
 
 export const BedTypeDisplay: Record<BedType, string> = {
-  [BedType.SINGLE]: 'Giường đơn',
-  [BedType.DOUBLE]: 'Giường đôi',
-  [BedType.QUEEN]: 'Giường Queen',
-  [BedType.KING]: 'Giường King',
-  [BedType.TWIN]: '2 giường đơn',
-  [BedType.BUNK]: 'Giường tầng'
+  [BedType.SINGLE]: "Giường đơn",
+  [BedType.DOUBLE]: "Giường đôi",
+  [BedType.QUEEN]: "Giường Queen",
+  [BedType.KING]: "Giường King",
+  [BedType.TWIN]: "2 giường đơn",
+  [BedType.BUNK]: "Giường tầng",
 };
 
 export interface Room {
@@ -150,21 +148,21 @@ export interface Room {
   hasBathroom: boolean;
   hasBalcony: boolean;
   hasKitchen: boolean;
-  
+
   reviewIds: string[];
   averageRating?: number;
   totalReviews?: number;
-  
+
   totalBookings?: number;
   lastBookedDate?: string;
-  
+
   createdDate?: string;
   updatedDate?: string;
   createdBy?: string;
   notes?: string;
 }
 
-// Room Response 
+// Room Response
 export interface RoomResponse {
   id: string;
   roomNumber: string;
@@ -192,23 +190,19 @@ export interface RoomResponse {
   hasBathroom: boolean;
   hasBalcony: boolean;
   hasKitchen: boolean;
-  
+
   reviewIds?: string[];
   reviews?: ReviewResponse[];
   averageRating?: number;
   totalReviews?: number;
-  
+
   totalBookings?: number;
   lastBookedDate?: string;
-  
+
   createdDate?: string;
   updatedDate?: string;
   notes?: string;
 }
-
-
-
-
 
 export interface RoomSearchRequest {
   type?: RoomType;
@@ -223,7 +217,7 @@ export interface RoomSearchRequest {
   hasBalcony?: boolean;
   keyword?: string;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
   page?: number;
   size?: number;
 }
@@ -239,10 +233,10 @@ export interface SearchRoomCriteria {
   isFeatured?: boolean;
   keyword?: string;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
   page?: number;
   size?: number;
-  
+
   checkInDate?: string;
   checkOutDate?: string;
   adults?: number;
@@ -264,16 +258,16 @@ export interface RoomStatistics {
   occupiedRooms: number;
   maintenanceRooms: number;
   cleaningRooms: number;
-  
+
   averagePrice: number;
   highestPrice: number;
   lowestPrice: number;
-  
+
   totalRevenue: number;
   averageRating: number;
-  
+
   totalBookings: number;
-  
+
   roomTypeStats: RoomTypeStats[];
 }
 
@@ -295,8 +289,8 @@ export interface CreateRoomRequest {
   hasBalcony?: boolean;
   hasKitchen?: boolean;
   notes?: string;
-  imageFiles: File[]; 
-  thumbnailImage?: File; 
+  imageFiles: File[];
+  thumbnailImage?: File;
 }
 
 export interface UpdateRoomRequest {
@@ -335,34 +329,54 @@ export const getBedTypeDisplay = (bedType: BedType): string => {
 // --- Booking Management Types ---
 
 export enum BookingStatus {
-  PENDING = 'PENDING',
-  CONFIRMED = 'CONFIRMED',
-  CHECKED_IN = 'CHECKED_IN',
-  CHECKED_OUT = 'CHECKED_OUT',
-  CANCELLED = 'CANCELLED',
-  NO_SHOW = 'NO_SHOW',
-  COMPLETED = 'COMPLETED',
-  REFUNDED = 'REFUNDED',
-  FAILED = 'FAILED'
+  PENDING = "PENDING",
+  CONFIRMED = "CONFIRMED",
+  CHECKED_IN = "CHECKED_IN",
+  CHECKED_OUT = "CHECKED_OUT",
+  CANCELLED = "CANCELLED",
+  NO_SHOW = "NO_SHOW",
+  COMPLETED = "COMPLETED",
+  REFUNDED = "REFUNDED",
+  FAILED = "FAILED",
+}
+
+export const BookingStatusDisplay: Record<BookingStatus, string> = {
+  [BookingStatus.PENDING]: "Chờ xác nhận",
+  [BookingStatus.CONFIRMED]: "Đã xác nhận",
+  [BookingStatus.CHECKED_IN]: "Đã nhận phòng",
+  [BookingStatus.CHECKED_OUT]: "Đã trả phòng",
+  [BookingStatus.CANCELLED]: "Đã hủy",
+  [BookingStatus.NO_SHOW]: "Khách không đến",
+  [BookingStatus.COMPLETED]: "Hoàn thành",
+  [BookingStatus.REFUNDED]: "Đã hoàn tiền",
+  [BookingStatus.FAILED]: "Thất bại",
 }
 
 export enum PaymentStatus {
-  UNPAID = 'UNPAID',
-  PAID = 'PAID',
-  PARTIALLY_PAID = 'PARTIALLY_PAID',
-  REFUNDED = 'REFUNDED',
-  FAILED = 'FAILED'
+  UNPAID = "UNPAID",
+  PAID = "PAID",
+  PARTIALLY_PAID = "PARTIALLY_PAID",
+  REFUNDED = "REFUNDED",
+  FAILED = "FAILED",
+}
+
+// Hiển thị thanh lọc phương thức thanh toán
+export const PaymentStatusDisplay: Record<PaymentStatus,string> = {
+  [PaymentStatus.UNPAID]: "Chưa thanh toán",
+  [PaymentStatus.PAID]:"Đã thanh toán",
+  [PaymentStatus.FAILED]:"Thanh toán thất bại",
+  [PaymentStatus.REFUNDED]:"Đã hoàn tiền",
+  [PaymentStatus.PARTIALLY_PAID]:"Đã trả một phần",
 }
 
 export enum PaymentMethod {
-  CASH = 'CASH',
-  CREDIT_CARD = 'CREDIT_CARD',
-  DEBIT_CARD = 'DEBIT_CARD',
-  BANK_TRANSFER = 'BANK_TRANSFER',
-  E_WALLET = 'E_WALLET',
-  PAYPAL = 'PAYPAL',
+  CASH = "CASH",
+  CREDIT_CARD = "CREDIT_CARD",
+  DEBIT_CARD = "DEBIT_CARD",
+  BANK_TRANSFER = "BANK_TRANSFER",
+  E_WALLET = "E_WALLET",
+  PAYPAL = "PAYPAL",
 }
-
 
 export interface GuestInfo {
   fullName: string;
@@ -385,19 +399,19 @@ export interface Booking {
   id: string;
   bookingNumber: string;
   bookingCode?: string; // Legacy field
-  
+
   // User info
   userId: string;
   userEmail: string;
   userFullName: string;
   userPhoneNumber: string;
-  
+
   // Room info
   roomId: string;
   roomNumber: string;
   roomName: string;
   room?: Room;
-  
+
   // Guest Info
   primaryGuest: GuestInfo;
   additionalGuests: GuestInfo[];
@@ -411,7 +425,7 @@ export interface Booking {
   checkOutDate: string;
   actualCheckInTime?: string;
   actualCheckOutTime?: string;
-  
+
   // Guest Counts
   numberOfGuests: number;
   numberOfChildren: number;
@@ -421,12 +435,12 @@ export interface Booking {
   // Pricing
   roomPricePerNight: number;
   numberOfNights: number;
-  
+
   subtotal: number;
   taxAmount: number;
   serviceCharge: number;
   discount: number;
-  
+
   // Additional Charges
   additionalCharges: ServiceCharge[];
   additionalChargesTotal: number;
@@ -444,12 +458,12 @@ export interface Booking {
   paymentStatusDisplay?: string;
   paymentMethod?: PaymentMethod;
   paymentTransactionId?: string;
-  
+
   // Status
   status: BookingStatus;
   statusDisplay?: string;
   statusColor?: string;
-  
+
   // Requests & Options
   specialRequests?: string;
   addedServices?: string[];
@@ -461,20 +475,20 @@ export interface Booking {
   // Cancellation
   cancellationReason?: string;
   cancelledAt?: string;
-  
+
   // Metadata
   bookingSource?: string;
   createdDate: string;
   updatedDate?: string;
   adminNotes?: string;
-  
+
   // Permissions / Computed
   canCancel: boolean;
   canCheckIn: boolean;
   canCheckOut: boolean;
   canReview: boolean;
   daysUntilCheckIn?: number;
-  
+
   // Helper for UI
   guestName?: string; // Legacy helper
   image?: string; // Legacy helper
@@ -486,13 +500,13 @@ export interface CreateBookingRequest {
   checkOutDate: string;
   numberOfGuests: number;
   numberOfChildren: number;
-  
+
   primaryGuest: GuestInfo;
   additionalGuests?: GuestInfo[];
-  
+
   specialRequests?: string;
   addedServices?: string[];
-  
+
   isEarlyCheckIn?: boolean;
   isLateCheckOut?: boolean;
   bookingSource?: string;
@@ -514,9 +528,9 @@ export interface CreateGroupBookingRequest {
   groupContactPhone: string;
   groupContactEmail: string;
   roomBookings: {
-      roomId: string;
-      numberOfGuests: number;
-      primaryGuest: GuestInfo;
+    roomId: string;
+    numberOfGuests: number;
+    primaryGuest: GuestInfo;
   }[];
   specialRequests?: string;
 }
@@ -531,11 +545,11 @@ export interface BookingSearchCriteria {
   checkInDateTo?: string;
   checkOutDateFrom?: string;
   checkOutDateTo?: string;
-  
+
   keyword?: string;
   checkInFrom?: string; // Legacy alias
   checkInTo?: string; // Legacy alias
-  
+
   minAmount?: number;
   maxAmount?: number;
   bookingSource?: string;
@@ -543,7 +557,7 @@ export interface BookingSearchCriteria {
   cccdNumber?: string;
 
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
   page?: number;
   size?: number;
 }
@@ -555,42 +569,41 @@ export interface BookingStats {
   checkedInBookings: number;
   completedBookings: number;
   cancelledBookings: number;
-  
+
   totalRevenue: number;
   paidRevenue: number;
   unpaidRevenue: number;
-  
+
   todayCheckIns: number;
   todayCheckOuts: number;
-  
+
   averageBookingValue: number;
   cancellationRate: number;
   occupancyRate: number;
 }
 
-
 export interface DailyReport {
-    expectedCheckIns: number;
-    checkInsList: Booking[];
-    expectedCheckOuts: number;
-    checkOutsList: Booking[];
-    dailyRevenue: number;
-    paymentsCount: number;
-    occupancyRate: number;
-    occupiedRooms: number;
-    totalRooms: number;
-    roomsNeedingCleaning: number;
+  expectedCheckIns: number;
+  checkInsList: Booking[];
+  expectedCheckOuts: number;
+  checkOutsList: Booking[];
+  dailyRevenue: number;
+  paymentsCount: number;
+  occupancyRate: number;
+  occupiedRooms: number;
+  totalRooms: number;
+  roomsNeedingCleaning: number;
 }
 
 export interface MonthlyReport {
-    totalBookings: number;
-    bookingsByStatus: Record<string, number>;
-    totalRevenue: number;
-    averageBookingValue: number;
-    occupancyRate: number;
-    cancellationRate: number;
-    bookingsBySource: Record<string, number>;
-    topRooms: Record<string, number>;
+  totalBookings: number;
+  bookingsByStatus: Record<string, number>;
+  totalRevenue: number;
+  averageBookingValue: number;
+  occupancyRate: number;
+  cancellationRate: number;
+  bookingsBySource: Record<string, number>;
+  topRooms: Record<string, number>;
 }
 
 // --- Common Types ---
@@ -607,7 +620,7 @@ export interface Page<T> {
 }
 
 export interface ApiResponse<T> {
-  status: 'success' | 'fail';
+  status: "success" | "fail";
   message: string;
   data: T;
 }
@@ -615,15 +628,15 @@ export interface ApiResponse<T> {
 // --- Review ---
 
 export enum ReviewStatus {
-  PENDING = 'PENDING',
-  APPROVED = 'APPROVED',
-  REJECTED = 'REJECTED'
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
 }
 
 export const ReviewStatusDisplay: Record<ReviewStatus, string> = {
-  [ReviewStatus.PENDING]: 'Chờ duyệt',
-  [ReviewStatus.APPROVED]: 'Đã duyệt',
-  [ReviewStatus.REJECTED]: 'Bị từ chối'
+  [ReviewStatus.PENDING]: "Chờ duyệt",
+  [ReviewStatus.APPROVED]: "Đã duyệt",
+  [ReviewStatus.REJECTED]: "Bị từ chối",
 };
 
 export interface Reply {
@@ -656,7 +669,7 @@ export interface Review {
   comment: string;
 
   status: ReviewStatus;
-  reviewStatus?: string; 
+  reviewStatus?: string;
 
   createdDate: string;
   updatedDate?: string;
@@ -681,7 +694,7 @@ export interface CreateReplyRequest {
 
 export interface ReviewResponse {
   id: string;
-  
+
   userId: string;
   userFullName: string;
   userAvatar?: string;
@@ -707,7 +720,7 @@ export interface ReviewFilterParams {
   page?: number;
   size?: number;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
   roomId?: string;
   userId?: string;
   status?: ReviewStatus;
@@ -716,7 +729,6 @@ export interface ReviewFilterParams {
   keyword?: string;
 }
 
-
 // --- Dashboard Types ---
 
 export interface AdminDashboardData {
@@ -724,17 +736,17 @@ export interface AdminDashboardData {
   bookingStats: any;
   roomStats: any;
   revenueStats: any;
-  
+
   totalRevenue?: number;
   totalBookings?: number;
   totalRooms?: number;
   activeRooms?: number;
   occupancyRate?: number;
-  
+
   revenueChart: any[];
   bookingTrendChart: any[];
   roomOccupancyChart: any[];
-  
+
   recentBookings: any[];
   todayActivities: any[];
 }
@@ -742,8 +754,8 @@ export interface AdminDashboardData {
 export interface DashboardFilterRequest {
   startDate?: string;
   endDate?: string;
-  period?: 'TODAY' | 'WEEK' | 'MONTH' | 'YEAR' | 'CUSTOM';
-  groupBy?: 'DAY' | 'WEEK' | 'MONTH';
+  period?: "TODAY" | "WEEK" | "MONTH" | "YEAR" | "CUSTOM";
+  groupBy?: "DAY" | "WEEK" | "MONTH";
 }
 
 export interface RecommendedRoom {
@@ -763,7 +775,7 @@ export interface UserDashboardData {
     completedBookings: number;
     cancelledBookings: number;
     loyaltyPoints: number;
-    membershipTier: 'Silver' | 'Gold' | 'Platinum' | 'Diamond';
+    membershipTier: "Silver" | "Gold" | "Platinum" | "Diamond";
     totalNightsStayed: number;
   };
   recentBookings: Booking[];
@@ -773,11 +785,11 @@ export interface UserDashboardData {
 }
 
 export interface PublicStats {
-    totalRooms: number;
-    availableRooms: number;
-    happyGuests?: number;
-    yearsOfOperation?: number;
-    averageRating?: number;
+  totalRooms: number;
+  availableRooms: number;
+  happyGuests?: number;
+  yearsOfOperation?: number;
+  averageRating?: number;
 }
 
 // --- Chatbot Types ---
@@ -793,11 +805,11 @@ export interface ChatSession {
 
 export interface ChatMessage {
   id?: string;
-  content?: string; 
-  message?: string; 
-  type: 'TEXT' | 'IMAGE' | 'QUICK_REPLY' | 'CARD' | 'TYPING';
-  sender?: 'USER' | 'BOT' | 'STAFF';
-  role?: 'user' | 'model'; 
+  content?: string;
+  message?: string;
+  type: "TEXT" | "IMAGE" | "QUICK_REPLY" | "CARD" | "TYPING";
+  sender?: "USER" | "BOT" | "STAFF";
+  role?: "user" | "model";
   timestamp?: string;
   quickReplies?: any[];
   cards?: any[];
