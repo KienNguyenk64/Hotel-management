@@ -56,6 +56,7 @@ public class User {
     @Builder.Default
     private boolean isActive = false;
 
+
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
     private LocalDateTime lastLoginDate;

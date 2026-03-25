@@ -21,4 +21,5 @@ public class VerificationToken {
     private LocalDateTime expiryDate;
     private boolean used;
     private String tokenType;       // EMAIL_VERIFICATION, PASSWORD_RESET
+    private PendingUserData pendingUserData;
 }

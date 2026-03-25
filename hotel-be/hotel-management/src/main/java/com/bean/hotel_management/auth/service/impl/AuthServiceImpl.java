@@ -5,6 +5,7 @@ import com.bean.hotel_management.auth.dto.response.AuthResponse;
 import com.bean.hotel_management.auth.exception.InvalidOperationException;
 import com.bean.hotel_management.auth.exception.InvalidTokenException;
 import com.bean.hotel_management.auth.exception.TokenExpiredException;
+import com.bean.hotel_management.auth.model.PendingUserData;
 import com.bean.hotel_management.auth.model.VerificationToken;
 import com.bean.hotel_management.auth.repository.IVerificationTokenRepository;
 import com.bean.hotel_management.auth.service.IAuthService;
@@ -94,6 +95,7 @@ public class AuthServiceImpl implements IAuthService {
     }
 
 
+
     @Override
     @Transactional
     public Map<String, Object> register(RegisterRequest request) {
@@ -107,6 +109,31 @@ public class AuthServiceImpl implements IAuthService {
                 "https://ui-avatars.com/api/?name="
                         + URLEncoder.encode(request.getFullName(), StandardCharsets.UTF_8);
 
+        tokenRepository.deleteByEmailAndTokenType(request.getEmail(),"EMAIL_VERIFICATION");
+
+        PendingUserData pendingData = PendingUserData.builder()
+                .fullName(request.getFullName())
+                .phoneNumber(request.getPhoneNumber())
+                .username(request.getUsername())
+                .cccdNumber(request.getCccdNumber())
+                .address(request.getAddress())
+                .avatarUrl(defaultAvatarUrl)
+                .password(passwordEncoder.encode(request.getPassword()))
+                .build();
+
+        try{
+            String verificationToken = createVerificationToken(request.getEmail(), "EMAIL_VERIFICATION");
+            emailService.sendVerificationEmail(request.getEmail(), verificationToken);
+        }catch (Exception e){
+            log.error("Fail to send verification email : {}",e.getMessage());
+            tokenRepository.deleteByEmailAndTokenType(request.getEmail(),"EMAIL_VERIFICATION");
+            throw new RuntimeException("Không thể gửi email xác thực vui lòng thử lại");
+
+        }
+        log.info("Send verification to email {}", request.getEmail());
+
+
+
         User newUser = User.builder()
                 .fullName(request.getFullName())
                 .email(request.getEmail())
@@ -118,17 +145,9 @@ public class AuthServiceImpl implements IAuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .isLocked(false)
-                .isActive(true)
+                .isActive(false)
                 .createdDate(LocalDateTime.now())
                 .build();
-
-        String verificationToken = createVerificationToken(newUser, "EMAIL_VERIFICATION");
-
-        try {
-            emailService.sendVerificationEmail(newUser.getEmail(), verificationToken);
-        } catch (Exception e) {
-            log.error("Failed to send verification email: {}", e.getMessage());
-        }
 
         User savedUser = userRepository.save(newUser);
 
@@ -145,8 +164,8 @@ public class AuthServiceImpl implements IAuthService {
         response.put("message", "Đăng ký thành công. Vui lòng kiểm tra email để xác thực tài khoản.");
 
         if (testMode) {
-            response.put("verificationToken", verificationToken);
-            response.put("verificationUrl", "/api/auth/verify-email?token=" + verificationToken);
+            response.put("verificationToken", verificationTokenExpiration);
+            response.put("verificationUrl", "/api/auth/verify-email?token=" + verificationTokenExpiration);
         }
 
         return response;
@@ -195,7 +214,7 @@ public class AuthServiceImpl implements IAuthService {
         tokenRepository.deleteByEmailAndTokenType(email, "EMAIL_VERIFICATION");
 
         // Create new token
-        String token = createVerificationToken(user, "EMAIL_VERIFICATION");
+        String token = createVerificationToken(user.getEmail(), "EMAIL_VERIFICATION");
 
         try {
             emailService.sendVerificationEmail(email, token);
@@ -249,7 +268,7 @@ public class AuthServiceImpl implements IAuthService {
 
         tokenRepository.deleteByEmailAndTokenType(email, "PASSWORD_RESET");
 
-        String token = createVerificationToken(user, "PASSWORD_RESET");
+        String token = createVerificationToken(user.getEmail(), "PASSWORD_RESET");
 
         try {
             emailService.sendResetPasswordEmail(email, token);
@@ -345,7 +364,7 @@ public class AuthServiceImpl implements IAuthService {
     }
 
 
-    private String createVerificationToken(User user, String tokenType) {
+    private String createVerificationToken(String newEmail, String tokenType) {
         String token = UUID.randomUUID().toString();
 
         long expiration = tokenType.equals("EMAIL_VERIFICATION")
@@ -354,7 +373,7 @@ public class AuthServiceImpl implements IAuthService {
 
         VerificationToken verificationToken = VerificationToken.builder()
                 .token(token)
-                .email(user.getEmail())
+                .email(newEmail)
                 .expiryDate(LocalDateTime.now().plusSeconds(expiration / 1000))
                 .used(false)
                 .tokenType(tokenType)
