@@ -158,10 +158,14 @@ export const Rooms: React.FC = () => {
     room.thumbnailImage ||
     'https://images.unsplash.com/photo-1566073771259-6a8506099945';
 
+    const moneyUSD = 26000;
   const formatVND = (usdPrice: number) => {
     return (usdPrice).toLocaleString('vi-VN');
   };
 
+  const formatUSD = (usdPrice: number) => {
+    return (usdPrice/moneyUSD).toLocaleString('vi-VN');
+  };
   const clearAllFilters = () => {
     setFilterType('All');
     setPriceRange('ALL');
@@ -479,7 +483,7 @@ export const Rooms: React.FC = () => {
                         </span>
                         <span className="text-xs text-gray-500 font-semibold"> VNĐ/ đêm</span>
                       </div>
-                      <span className="text-xs text-gray-500">≈ ${room.pricePerNight.toLocaleString()}</span>
+                      <span className="text-xs text-gray-500">≈ ${formatUSD(room.pricePerNight).toLocaleString()}</span>
                       
                       <button
                         onClick={() => navigate(`/room/${room.id}`)}

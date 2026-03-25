@@ -314,7 +314,7 @@ export const AdminBookings: React.FC = () => {
       <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
             <div>
-                <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-2">Quản lý Đặt phòng</h1>
+                <h1 className="text-3xl font-bold text-slate-900 mb-1">Quản lý đặt phòng</h1>
                 <div className="flex items-center gap-4 text-sm text-slate-500 font-medium">
                     <span className="flex items-center gap-1"><Activity size={16} className="text-indigo-500"/> Hôm nay:</span>
                     <span className="flex items-center gap-1"><LogIn size={14} className="text-emerald-500"/> {stats?.todayCheckIns || 0} Check-in</span>

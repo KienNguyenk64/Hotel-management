@@ -34,7 +34,7 @@ export const Sidebar: React.FC = () => {
           </div>
           <div className="flex items-baseline gap-1">
              <span className="text-xl font-serif font-bold text-lux-900 leading-none">Moon</span>
-             <span className="text-lg font-sans text-lux-500 font-bold tracking-widest leading-none">PALACE</span>
+             <span className="text-lg font-sans text-lux-500 font-bold tracking-widest leading-none">LIGHT</span>
           </div>
         </div>
 

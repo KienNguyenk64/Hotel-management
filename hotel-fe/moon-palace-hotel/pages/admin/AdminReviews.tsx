@@ -199,7 +199,7 @@ export const AdminReviews: React.FC = () => {
       <header className="mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
-                <h1 className="text-3xl font-serif font-bold text-lux-900 mb-1">Đánh giá & Phản hồi</h1>
+                <h1 className="text-3xl font-bold text-slate-900 mb-1">Đánh giá & Phản hồi</h1>
                 <p className="text-lux-500">Quản lý tiếng nói của khách hàng và chất lượng dịch vụ.</p>
             </div>
             

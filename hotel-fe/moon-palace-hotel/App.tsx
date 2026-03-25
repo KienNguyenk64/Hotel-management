@@ -1,46 +1,52 @@
-import React, { useEffect } from 'react';
-import { HashRouter, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
-import { Sidebar } from './components/Sidebar';
-import { Navbar } from './components/Navbar';
-import { Footer } from './components/Footer';
-import { ChatbotWidget } from './components/ChatbotWidget';
-import { BackToTop } from './components/BackToTop';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import React, { useEffect } from "react";
+import {
+  HashRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+  useLocation,
+} from "react-router-dom";
+import { Sidebar } from "./components/Sidebar";
+import { Navbar } from "./components/Navbar";
+import { Footer } from "./components/Footer";
 
-import { Login } from './pages/Login';
-import { Register } from './pages/Register';
-import { ForgotPassword } from './pages/ForgotPassword';
-import { VerifyEmail } from './pages/VerifyEmail';
-import { ResetPassword } from './pages/ResetPassword';
+import { BackToTop } from "./components/BackToTop";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
-import { AdminDashboard } from './pages/AdminDashboard';
-import { AdminBookings } from './pages/admin/AdminBookings';
-import { AdminGuests } from './pages/admin/AdminGuests';
-import { AdminSettings } from './pages/admin/AdminSettings';
-import { AdminReviews } from './pages/admin/AdminReviews';
-import { AdminRooms } from './pages/admin/AdminRooms';
-import { UserProfile } from './pages/UserProfile';
-import { Home } from './pages/Home';
-import { RoomDetail } from './pages/RoomDetail';
-import { About } from './pages/About';
-import { Services } from './pages/Services';
-import { BookingPage } from './pages/BookingPage';
-import { Rooms } from './pages/Rooms';
-import { MyBookings } from './pages/MyBookings';
-import { PaymentPage } from './pages/PaymentPage';
-import { NotFound } from './pages/NotFound';
-import { DiningMenu } from './pages/DiningMenu';
-import { ServiceBooking } from './pages/ServiceBooking';
-import { Contact } from './pages/Contact';
-import { Promotions } from './pages/Promotions';
-import { Blog } from './pages/Blog';
-import { Gallery } from './pages/Gallery';
-import { Role } from './types';
-import { Loader2 } from 'lucide-react';
+import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
+import { ForgotPassword } from "./pages/ForgotPassword";
+import { VerifyEmail } from "./pages/VerifyEmail";
+import { ResetPassword } from "./pages/ResetPassword";
 
+import { AdminDashboard } from "./pages/AdminDashboard";
+import { AdminBookings } from "./pages/admin/AdminBookings";
+import { AdminGuests } from "./pages/admin/AdminGuests";
+import { AdminSettings } from "./pages/admin/AdminSettings";
+import { AdminReviews } from "./pages/admin/AdminReviews";
+import { AdminRooms } from "./pages/admin/AdminRooms";
+import { UserProfile } from "./pages/UserProfile";
+import { Home } from "./pages/Home";
+import { RoomDetail } from "./pages/RoomDetail";
+import { About } from "./pages/About";
+import { Services } from "./pages/Services";
+import { BookingPage } from "./pages/BookingPage";
+import { Rooms } from "./pages/Rooms";
+import { MyBookings } from "./pages/MyBookings";
+import { PaymentPage } from "./pages/PaymentPage";
+import { NotFound } from "./pages/NotFound";
+import { DiningMenu } from "./pages/DiningMenu";
+import { ServiceBooking } from "./pages/ServiceBooking";
+import { Contact } from "./pages/Contact";
+import { Promotions } from "./pages/Promotions";
+import { Blog } from "./pages/Blog";
+import { Gallery } from "./pages/Gallery";
+import { Role } from "./types";
+import { Loader2 } from "lucide-react";
 
-import ZaloButton from './components/Zalo'; 
-import ChatbotItems from './components/ChatbotItems';
+import ZaloButton from "./components/Zalo";
+import ChatbotItems from "./components/ChatbotItems";
 // ScrollToTop Component
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -74,10 +80,18 @@ interface SidebarLayoutProps {
   requiredRole?: Role;
 }
 
-const SidebarLayout: React.FC<SidebarLayoutProps> = ({ children, requiredRole }) => {
+const SidebarLayout: React.FC<SidebarLayoutProps> = ({
+  children,
+  requiredRole,
+}) => {
   const { user, isAuthenticated, isLoading } = useAuth();
 
-  if (isLoading) return <div className="flex h-screen items-center justify-center bg-lux-50"><Loader2 className="animate-spin text-lux-500" size={40}/></div>;
+  if (isLoading)
+    return (
+      <div className="flex h-screen items-center justify-center bg-lux-50">
+        <Loader2 className="animate-spin text-lux-500" size={40} />
+      </div>
+    );
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -87,9 +101,9 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({ children, requiredRole })
   if (requiredRole && user?.role) {
     const userRole = (user.role as string).toUpperCase();
     const targetRole = requiredRole.toUpperCase();
-    
+
     if (userRole !== targetRole) {
-        return <Navigate to="/" replace />; // Or unauthorized page
+      return <Navigate to="/" replace />; // Or unauthorized page
     }
   }
 
@@ -99,7 +113,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({ children, requiredRole })
       <main className="ml-64 flex-1 p-4 md:p-8 overflow-y-auto h-screen">
         {children}
       </main>
-      <ChatbotWidget />
+      <ChatbotItems />
     </div>
   );
 };
@@ -111,8 +125,11 @@ const AppRoutes: React.FC = () => {
     return (
       <div className="flex h-screen w-screen items-center justify-center bg-lux-900">
         <div className="text-center">
-           <Loader2 className="animate-spin text-lux-500 mx-auto mb-4" size={48}/>
-           <p className="text-white font-serif tracking-widest">MOON PALACE</p>
+          <Loader2
+            className="animate-spin text-lux-500 mx-auto mb-4"
+            size={48}
+          />
+          <p className="text-white font-serif tracking-widest">MOONLIGHT</p>
         </div>
       </div>
     );
@@ -143,7 +160,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="*" element={<NotFound />} />
       </Route>
-      
+
       {/* Admin Routes with Sidebar */}
       <Route
         path="/dashboard"
@@ -203,26 +220,26 @@ const AppRoutes: React.FC = () => {
           </SidebarLayout>
         }
       />
-      <Route 
-        path="/my-bookings" 
+      <Route
+        path="/my-bookings"
         element={
-            <SidebarLayout requiredRole={Role.USER}>
-              <MyBookings />
-            </SidebarLayout>
-        } 
+          <SidebarLayout requiredRole={Role.USER}>
+            <MyBookings />
+          </SidebarLayout>
+        }
       />
 
-      <Route 
-        path="/payment" 
+      <Route
+        path="/payment"
         element={
-            <SidebarLayout requiredRole={Role.USER}>
-              <PaymentPage />
-            </SidebarLayout>
-        } 
+          <SidebarLayout requiredRole={Role.USER}>
+            <PaymentPage />
+          </SidebarLayout>
+        }
       />
     </Routes>
   );
-}
+};
 
 const App: React.FC = () => {
   return (

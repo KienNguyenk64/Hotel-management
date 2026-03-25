@@ -18,7 +18,7 @@ export const AdminSettings: React.FC = () => {
   return (
     <div className="animate-fade-in max-w-5xl mx-auto">
       <header className="mb-8">
-        <h1 className="text-3xl font-serif font-bold text-lux-900 mb-1">Cài đặt hệ thống</h1>
+        <h1 className="text-3xl font-bold text-slate-900 mb-1">Cài đặt hệ thống</h1>
         <p className="text-lux-500">Quản lý cấu hình toàn bộ khách sạn.</p>
       </header>
 
