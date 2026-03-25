@@ -14,13 +14,19 @@ interface ChatItem {
 /* ================= ICON ================= */
 const ChatbotIcon: React.FC = () => {
   return (
-    <svg
-      className="w-8 h-8 p-1 bg-white rounded-full"
-      viewBox="0 0 1024 1024"
-      fill="currentColor"
-    >
-      <path d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9z" />
-    </svg>
+    // <svg
+    //   className="w-8 h-8 p-1 bg-white rounded-full"
+    //   viewBox="0 0 1024 1024"
+    //   fill="currentColor"
+    // >
+    //   <path d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9z" />
+    // </svg>
+    <img
+      src="../image/1538298822.svg"
+      alt="ChatbotAIassistant"
+      // Thêm các class quan trọng vào
+      className="w-12 h-12 p-1 object-contain"
+    />
   );
 };
 
@@ -143,7 +149,7 @@ const ChatbotItems: React.FC = () => {
 
       if (!res.ok) {
         console.error("API Error:", data.error?.message || data);
-        throw new Error("Something wrong !!!");
+        throw new Error("Đã xảy ra lỗi gì đó !!!");
       }
 
       const text = data.candidates[0].content.parts[0].text
@@ -153,7 +159,7 @@ const ChatbotItems: React.FC = () => {
       update(text);
     } catch (err: any) {
       console.error("Catch Error:", err); // 👈 log chi tiết lỗi
-      update("Something wrong !!!", true); // 👈 hiển thị cho user
+      update("Đã xảy ra lỗi gì đó !!!", true); // 👈 hiển thị cho user
     }
   };
 
@@ -170,9 +176,18 @@ const ChatbotItems: React.FC = () => {
       <button
         onClick={() => setOpen(!open)}
         className="fixed bottom-20 right-6 w-14 h-14 bg-sky-500 text-white rounded-full flex items-center justify-center shadow-lg z-50 transition-all duration-300 ease-in-out
-hover:scale-110 hover:bg-slate-800 hover:shadow-2xl active:scale-95"
+hover:scale-110 hover:bg-slate-800 hover:shadow-2xl active:scale-95 "
       >
-        chat
+        <img
+          src="../image/1538298822.svg"
+          alt="ChatbotAIassistant"
+          // Thêm các class quan trọng vào
+          className="max-w-full max-h-full object-contain"
+        />
+        <span className="absolute -top-1 -right-1 flex h-4 w-4">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500 border-2 border-white"></span>
+        </span>
       </button>
 
       {/* Chat Box */}
@@ -195,7 +210,8 @@ hover:scale-110 hover:bg-slate-800 hover:shadow-2xl active:scale-95"
             <div className="flex gap-2">
               <ChatbotIcon />
               <p className="bg-purple-100 px-4 py-2 rounded-xl text-sm">
-                Hello 👋 <br /> How can I help you?
+                MoonLight Xin Chào Quý Khách 👋 <br /> Bạn có thắc mắc nào cần
+                giải đáp ?
               </p>
             </div>
 
