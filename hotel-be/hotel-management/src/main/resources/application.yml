@@ -98,7 +98,7 @@ app:
 
   upload:
     max-file-size: 50485760       # 5MB
-    allowed-extensions: ".jpg,.jpeg,.png,.gif,.pdf,.webp"
+    allowed-extensions: ".jpg,.jpeg,.png,.gif,.pdf,.webp,.avif"
     default-folder: hotel_management
     quality: auto:good
     auto-format: true

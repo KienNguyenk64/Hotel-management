@@ -26,7 +26,7 @@ public class FileUtils {
 
     private final Cloudinary cloudinary;
 
-    private static final String[] ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png", "gif", "webp"};
+    private static final String[] ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png", "gif", "webp","avif"};
 
     private static final long MAX_FILE_SIZE = 10 *1024*1024;
 
