@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { adminRoomApi, roomApi } from '../../services/api';
-import { Room, RoomType, RoomStatus, CreateRoomRequest, BedType, RoomView } from '../../types';
+import { Room, RoomType, RoomStatus,RoomStatusDisplay,  CreateRoomRequest, BedType, RoomView, RoomTypeDisplay } from '../../types';
 import { 
   Plus, Edit2, Trash2, XCircle, Search, Filter, Loader2, 
   AlertTriangle, Image as ImageIcon, Check, Eye, ChevronLeft, ChevronRight, 
   RotateCcw, Archive, Star, X, Wifi, Wind, CheckCircle, ShieldAlert, BedDouble,
-  Upload, ImagePlus, Trash
+  Upload, ImagePlus, Trash ,Wrench
 } from 'lucide-react';
 
 // Extended type to handle form state including optional isActive for edits
@@ -378,7 +378,7 @@ export const AdminRooms: React.FC = () => {
         }
         await adminRoomApi.update(editingId, updatePayload);
         
-        // Update status if changed
+        // Cập nhật trạng thái nếu có thay đổi
         const originalRoom = rooms.find(r => r.id === editingId);
         if (originalRoom && originalRoom.status !== currentStatus) {
             await adminRoomApi.updateStatus(editingId, currentStatus);
@@ -449,6 +449,8 @@ export const AdminRooms: React.FC = () => {
       case RoomStatus.OCCUPIED: return <span className="px-2.5 py-1 bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-xs font-bold flex items-center gap-1"><ShieldAlert size={12}/> Đã có khách</span>;
       case RoomStatus.MAINTENANCE: return <span className="px-2.5 py-1 bg-amber-100 text-amber-700 border border-amber-200 rounded-lg text-xs font-bold flex items-center gap-1"><RotateCcw size={12}/> Bảo trì</span>;
       case RoomStatus.CLEANING: return <span className="px-2.5 py-1 bg-cyan-100 text-cyan-700 border border-cyan-200 rounded-lg text-xs font-bold flex items-center gap-1"><Wind size={12}/> Dọn dẹp</span>;
+      case RoomStatus.RESERVED: return <span className="px-2.5 py-1 bg-amber-100 text-amber-700 border border-amber-200 rounded-lg text-xs font-bold flex items-center gap-1"><ShieldAlert size={12}/> Đặt trước</span>;
+      case RoomStatus.OUT_OF_SERVICE: return <span className="px-2.5 py-1 bg-amber-100 text-amber-700 border border-amber-200 rounded-lg text-xs font-bold flex items-center gap-1"><Wrench size={12}/>Hỏng,không dùng được</span>;
       default: return <span className="px-2.5 py-1 bg-gray-100 text-gray-700 border border-gray-200 rounded-lg text-xs font-bold">{status}</span>;
     }
   };
@@ -532,7 +534,9 @@ export const AdminRooms: React.FC = () => {
                 className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-700 font-bold focus:outline-none cursor-pointer w-full hover:bg-slate-50 transition-colors"
             >
                 <option value="All">Tất cả loại phòng</option>
-                {Object.values(RoomType).map(t => <option key={t} value={t}>{t}</option>)}
+                {Object.values(RoomType).map(t => <option key={t} value={t}>
+                  {RoomTypeDisplay[t]}
+                  </option>)}
             </select>
             </div>
             
@@ -545,7 +549,9 @@ export const AdminRooms: React.FC = () => {
                 className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-700 font-bold focus:outline-none cursor-pointer w-full hover:bg-slate-50 transition-colors"
             >
                 <option value="All">Tất cả</option>
-                {Object.values(RoomStatus).map(s => <option key={s} value={s}>{s}</option>)}
+                {Object.values(RoomStatus).map(s => <option key={s} value={s}>
+                  {RoomStatusDisplay[s]}
+                </option>)}
             </select>
             </div>
 
