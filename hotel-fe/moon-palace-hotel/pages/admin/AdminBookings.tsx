@@ -35,12 +35,13 @@ import {
   Booking,
   BookingStatus,
   BookingStatusDisplay,
-  PaymentStatus,
+  PaymentStatus,  
   PaymentStatusDisplay,
   BookingStats,
   BookingSearchCriteria,
   ServiceCharge,
 } from "../../types";
+import Confirmdialog from "../../components/Confirmdialog.tsx";
 
 type SearchMode = "GENERAL" | "BOOKING_ID" | "CCCD";
 
@@ -196,9 +197,8 @@ export const AdminBookings: React.FC = () => {
       return;
     }
 
-    if (!window.confirm("Bạn có chắc chắn muốn thực hiện hành động này?"))
-      return;
-
+    if (!confirm("Bạn có chắc chắn muốn thực hiện hành động này?")) return;
+    
     setActionLoading(id);
     try {
       let response;

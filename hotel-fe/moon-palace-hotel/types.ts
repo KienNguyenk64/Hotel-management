@@ -45,7 +45,7 @@ export interface ResetPasswordRequest {
   confirmPassword: string;
 }
 
-// --- Room Management Types ---
+// --- Loại quản lý phòng ---
 
 export enum RoomType {
   STANDARD = "STANDARD",

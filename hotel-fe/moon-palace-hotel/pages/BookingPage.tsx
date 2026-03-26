@@ -262,7 +262,7 @@ export const BookingPage: React.FC = () => {
 
   const totalDays = calculateDays();
   const subTotal = room.pricePerNight * totalDays;
-  const tax = subTotal * 0.1; // 10% VAT
+  const tax = subTotal * 0.1; // 10% thuế VAT
   const serviceCharge = subTotal * 0.05; // 5% Service Charge
   const total = subTotal + tax + serviceCharge;
 

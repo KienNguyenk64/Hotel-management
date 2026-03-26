@@ -72,7 +72,6 @@ export const AdminSettings: React.FC = () => {
                            <div>
                                <label className="block text-sm font-bold text-lux-700 mb-2">Tiền tệ</label>
                                <select className="w-full p-3 bg-lux-50 border border-lux-200 rounded-xl outline-none focus:border-lux-500 font-bold">
-                                   <option value="USD">USD ($)</option>
                                    <option value="VND">VND (₫)</option>
                                </select>
                            </div>
@@ -122,6 +121,7 @@ export const AdminSettings: React.FC = () => {
                                <div>
                                    <label className="block text-sm font-bold text-lux-700 mb-2">Thuế VAT (%)</label>
                                    <input type="number" defaultValue="10" className="w-full p-3 bg-lux-50 border border-lux-200 rounded-xl outline-none focus:border-lux-500" />
+        
                                </div>
                                <div>
                                    <label className="block text-sm font-bold text-lux-700 mb-2">Phí dịch vụ (%)</label>
