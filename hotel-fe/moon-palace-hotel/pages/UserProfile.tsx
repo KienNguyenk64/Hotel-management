@@ -28,6 +28,7 @@ import {
   Upload,
   Camera,
   Trash2,
+  Moon,
 } from "lucide-react";
 import { UserDashboardData, UserPreferences } from "../types";
 import { useAuth } from "../context/AuthContext";
@@ -581,7 +582,7 @@ export const UserProfile: React.FC = () => {
                         </h3>
                         <p className="text-slate-500 mb-6 max-w-md mx-auto">
                           Hãy lên kế hoạch cho kỳ nghỉ dưỡng tiếp theo của bạn
-                          tại Moon Palace.
+                          tại MoonLight.
                         </p>
                         <button
                           onClick={() => navigate("/rooms")}
@@ -690,8 +691,8 @@ export const UserProfile: React.FC = () => {
                             Chi tiêu
                           </p>
                           <p className="text-xl font-bold text-slate-900">
-                            $
                             {dashboardData.userStats.totalSpent.toLocaleString()}
+                            ₫
                           </p>
                         </div>
                       </div>
