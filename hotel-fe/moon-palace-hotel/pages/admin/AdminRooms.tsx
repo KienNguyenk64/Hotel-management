@@ -807,7 +807,8 @@ export const AdminRooms: React.FC = () => {
                             <img
                               src={displayImg}
                               alt={room.roomNumber}
-                              className="w-full h-full object-cover hover:cursor-pointer" title="Xem chi tiết"
+                              className="w-full h-full object-cover hover:cursor-pointer"
+                              title="Xem chi tiết"
                               onError={(e) => {
                                 e.currentTarget.src = PLACEHOLDER_IMG;
                               }}

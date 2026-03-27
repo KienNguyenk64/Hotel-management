@@ -45,7 +45,7 @@ export const About: React.FC = () => {
         </div>
         <div className="relative z-10 text-center px-4 max-w-4xl">
             <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-6">Câu chuyện của chúng tôi</h1>
-            <p className="text-lux-100 text-lg md:text-xl font-light">Hành trình kiến tạo không gian nghỉ dưỡng đẳng cấp dưới ánh trăng</p>
+            <p className="text-lux-100 text-lg md:text-xl font-bold">Hành trình kiến tạo không gian nghỉ dưỡng yên tĩnh dưới ánh trăng</p>
         </div>
       </div>
 
@@ -53,7 +53,7 @@ export const About: React.FC = () => {
       <section className="py-20 px-6 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div>
-                <span className="text-lux-500 font-bold uppercase tracking-widest text-sm">Về Moon Palace</span>
+                <span className="text-lux-500 font-bold uppercase tracking-widest text-sm">Về Moon Light Hotel</span>
                 <h2 className="text-4xl font-serif font-bold text-lux-900 mt-2 mb-6">Nơi sang trọng trở thành tiêu chuẩn</h2>
                 <p className="text-lux-600 mb-6 leading-relaxed">
                     Được thành lập vào năm 2015, Moon Palace không chỉ là một khách sạn, mà là biểu tượng của sự thanh lịch và tinh tế. Lấy cảm hứng từ vẻ đẹp huyền bí và êm dịu của ánh trăng, chúng tôi tạo ra một không gian nơi thời gian như ngừng lại.
@@ -67,7 +67,7 @@ export const About: React.FC = () => {
                     </div>
                     <div>
                         <p className="font-bold text-lux-900 text-lg">CEO & Founder</p>
-                        <p className="text-lux-500 font-serif italic">Alexander H.</p>
+                        <p className="text-lux-500 font-serif italic">Park. Kien</p>
                     </div>
                 </div>
             </div>
@@ -90,7 +90,7 @@ export const About: React.FC = () => {
                       </div>
                       <h2 className="text-4xl font-serif font-bold mb-6">Từ nông trại đến bàn ăn</h2>
                       <p className="text-lux-200 mb-6 leading-relaxed">
-                          Tại Moon Palace, chúng tôi tin rằng món ăn ngon bắt đầu từ nguyên liệu sạch. Các đầu bếp của chúng tôi hợp tác trực tiếp với các nông trại hữu cơ địa phương để mang đến những hương vị tươi mới nhất mỗi ngày.
+                          Tại MoonLight, chúng tôi tin rằng món ăn ngon bắt đầu từ nguyên liệu sạch. Các đầu bếp của chúng tôi hợp tác trực tiếp với các nông trại hữu cơ địa phương để mang đến những hương vị tươi mới nhất mỗi ngày.
                       </p>
                       <button 
                         onClick={() => navigate('/menu')}
@@ -101,7 +101,7 @@ export const About: React.FC = () => {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                       <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1000&auto=format&fit=crop" className="rounded-2xl shadow-lg transform translate-y-8" alt="Food 1"/>
-                      <img src="https://images.unsplash.com/photo-1550966871-3ed3c47e2ce2?q=80&w=1000&auto=format&fit=crop" className="rounded-2xl shadow-lg" alt="Food 2"/>
+                      <img src="https://plus.unsplash.com/premium_photo-1694715585704-81111d19074d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" className="rounded-2xl shadow-lg" alt="Food 2"/>
                   </div>
               </div>
           </div>

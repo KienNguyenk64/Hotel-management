@@ -15,7 +15,6 @@ import {
   TrendingUp,
   Sparkles,
   X,
-  SlidersHorizontal,
   DollarSign
 } from 'lucide-react';
 import { Breadcrumb } from '../components/Breadcrumb';
@@ -188,7 +187,7 @@ export const Rooms: React.FC = () => {
           <div className="hidden md:flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 flex-wrap">
               <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-bold text-sm shadow-md">
-                <SlidersHorizontal size={18} /> Bộ lọc
+                 Bộ lọc
               </div>
 
               <div className="relative" ref={dropdownRef}>
@@ -290,7 +289,7 @@ export const Rooms: React.FC = () => {
               onClick={() => setMobileFiltersOpen(true)}
               className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-bold text-sm shadow-md"
             >
-              <SlidersHorizontal size={18} /> Bộ lọc & Sắp xếp
+              Bộ lọc & Sắp xếp
               {hasActiveFilter && (
                 <span className="bg-white text-blue-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
                   !
