@@ -268,7 +268,7 @@ export const MyBookings: React.FC = () => {
                   <span className="block text-xs text-slate-400 font-bold uppercase mb-0.5">
                     Tổng cộng
                   </span>
-                  <span className="text-2xl font-serif font-bold text-slate-900">
+                  <span className="text-2xl font-bold text-slate-900">
                     {selectedBooking.totalAmount.toLocaleString()} ₫
                   </span>
                 </div>
@@ -409,10 +409,10 @@ export const MyBookings: React.FC = () => {
       <div className="max-w-5xl mx-auto px-4 md:px-6">
         <header className="mb-10">
           <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
-            Lịch sử nghỉ dưỡng
+            Lịch sử đặt phòng
           </h1>
           <p className="text-slate-500">
-            Quản lý các chuyến đi và trải nghiệm của bạn tại Moon Palace.
+            Quản lý các chuyến đi và trải nghiệm của bạn tại MoonLight.
           </p>
         </header>
 
@@ -497,8 +497,11 @@ export const MyBookings: React.FC = () => {
                         </div>
                       </div>
                       <div className="text-right">
-                        <span className="block text-2xl font-serif font-bold text-slate-900">
-                          ${booking.totalAmount.toLocaleString()}
+                        <span className="block text-2xl font-bold text-slate-900">
+                          {booking.totalAmount.toLocaleString()}
+                          <span className="font-bold font-mono text-indigo-600 ml-1 text-{8px}">
+                            VND
+                          </span>
                         </span>
                         {booking.status !== BookingStatus.CANCELLED && (
                           <span

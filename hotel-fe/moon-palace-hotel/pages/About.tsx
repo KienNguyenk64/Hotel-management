@@ -115,9 +115,9 @@ export const About: React.FC = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {[
-                      { name: "Alexander H.", role: "Founder & CEO", img: "https://randomuser.me/api/portraits/men/32.jpg" },
-                      { name: "Sarah Jenkins", role: "General Manager", img: "https://randomuser.me/api/portraits/women/44.jpg" },
-                      { name: "Michael Chen", role: "Head Chef", img: "https://randomuser.me/api/portraits/men/85.jpg" }
+                      { name: "Park. Kien", role: "Founder & CEO", img: "../image/CEO&Founder.jpg" },
+                      { name: "Johny Trương", role: "General Manager", img: "../image/general_manager.jpg" },
+                      { name: "Mason Nguyễn", role: "Head Chef", img: "../image/master_chef-8481.jpg" }
                   ].map((member, idx) => (
                       <div key={idx} className="group cursor-pointer">
                           <div className="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-4 border-lux-50 shadow-xl relative">
@@ -175,16 +175,16 @@ export const About: React.FC = () => {
           </div>
       </section>
 
-      {/* Gallery Grid */}
+      {/* Khối thư viện ảnh */}
       <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-6">
                <div className="flex justify-between items-end mb-12">
                    <div>
                        <span className="text-lux-500 font-bold uppercase tracking-widest text-sm">Thư viện ảnh</span>
-                       <h2 className="text-4xl font-serif font-bold text-lux-900 mt-2">Góc nhìn Moon Palace</h2>
+                       <h2 className="text-4xl font-serif font-bold text-lux-900 mt-2">Góc nhìn MoonLight</h2>
                    </div>
                    <button className="flex items-center gap-2 text-lux-900 font-bold hover:text-lux-600 transition-colors">
-                       <Instagram size={20}/> Theo dõi @moonpalace
+                       <Instagram size={20}/> Theo dõi @moonlight
                    </button>
                </div>
                
