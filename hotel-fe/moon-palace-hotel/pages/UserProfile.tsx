@@ -627,7 +627,7 @@ export const UserProfile: React.FC = () => {
                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                               />
                               <div className="absolute top-2 right-2 bg-slate-900/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-sm font-bold">
-                                ${room.pricePerNight}
+                                {room.pricePerNight}₫
                               </div>
                             </div>
                             <div>

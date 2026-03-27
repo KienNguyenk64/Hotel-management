@@ -35,7 +35,7 @@ public class RegisterRequest {
 
     @NotBlank(message = "Username không được để trống")
     @Size(min = 3, max = 50, message = "Username từ 3-50 ký tự")
-    @Pattern(regexp = "^[a-zA-Z0-9._-]{3,50}$",
+    @Pattern(regexp = "^[a-zA-Z0-9._ -]{3,50}$",
             message = "Username chỉ chứa chữ, số và . _ -")
     private String username;
 
