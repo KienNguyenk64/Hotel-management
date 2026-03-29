@@ -151,8 +151,8 @@ const ChatbotItems: React.FC = () => {
 
       update(text);
     } catch (err: any) {
-      console.error("Catch Error:", err); // 👈 log chi tiết lỗi
-      update("Đã xảy ra lỗi gì đó !!!", true); // 👈 hiển thị cho user
+      console.error("Catch Error:", err); //  log chi tiết lỗi
+      update("Đã xảy ra lỗi gì đó !!!", true); //  hiển thị cho user
     }
   };
 
