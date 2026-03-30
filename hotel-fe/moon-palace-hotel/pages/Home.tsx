@@ -285,7 +285,10 @@ export const Home: React.FC = () => {
                     <div className="pt-4 border-t border-lux-50 flex items-center justify-between mt-auto">
                       <div>
                         <span className="text-lg font-bold text-lux-900">
-                          ${room.pricePerNight.toLocaleString()}
+                          {room.pricePerNight.toLocaleString()}
+                          <span className="font-bold font-mono text-indigo-600 ml-1 text-sm">
+                            VND
+                          </span>
                         </span>
                         <span className="text-xs text-lux-400">/đêm</span>
                       </div>
@@ -349,12 +352,12 @@ export const Home: React.FC = () => {
                           <div className="w-20 h-20 rounded-full p-1 bg-white border border-lux-200 mb-4 shadow-sm">
                             <img
                               src={review.userAvatar}
-                              alt={review.userName}
+                              alt={review.userFullName}
                               className="w-full h-full rounded-full object-cover"
                             />
                           </div>
                           <h4 className="font-bold text-lux-900 text-lg">
-                            {review.userName}
+                            {review.userFullName}
                           </h4>
                           <p className="text-sm text-lux-500 mb-2">
                             {review.roomName}
