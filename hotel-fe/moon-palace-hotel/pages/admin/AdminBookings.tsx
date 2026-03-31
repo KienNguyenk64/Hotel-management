@@ -824,9 +824,6 @@ export const AdminBookings: React.FC = () => {
                                 Check-out
                               </button>
                             )}
-                            <button className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors">
-                              <MoreHorizontal size={18} />
-                            </button>
                           </div>
                         </td>
                       </tr>
