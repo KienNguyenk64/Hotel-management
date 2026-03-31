@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, FormEvent } from "react";
-import { companyInfo } from "../companyInfo";
+import { companyInfo, getFullCompanyContext } from "../companyInfo";
 
 /* ================= TYPES ================= */
 type Role = "user" | "model";
@@ -107,6 +107,7 @@ const ChatForm: React.FC<ChatFormProps> = ({
 
 /* ================= MAIN COMPONENT ================= */
 const ChatbotItems: React.FC = () => {
+  // Khởi tạo với dữ liệu tĩnh trước (hiển thị nhanh)
   const [chatHistory, setChatHistory] = useState<ChatItem[]>([
     {
       role: "model",
@@ -116,7 +117,33 @@ const ChatbotItems: React.FC = () => {
   ]);
 
   const [open, setOpen] = useState(false);
+  const [contextLoaded, setContextLoaded] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
+
+  // Khi mở chatbot lần đầu → load dữ liệu động từ API
+  useEffect(() => {
+    if (open && !contextLoaded) {
+      getFullCompanyContext()
+        .then((fullContext) => {
+          setChatHistory((prev) => {
+            // Thay thế tin nhắn context ẩn đầu tiên bằng full context
+            const updated = [...prev];
+            updated[0] = {
+              role: "model",
+              text: fullContext,
+              hideInChat: true,
+            };
+            return updated;
+          });
+          setContextLoaded(true);
+          console.log("✅ Chatbot: Đã tải dữ liệu động thành công");
+        })
+        .catch((err) => {
+          console.warn("⚠️ Chatbot: Sử dụng dữ liệu tĩnh fallback", err);
+          setContextLoaded(true); // không retry, dùng static
+        });
+    }
+  }, [open, contextLoaded]);
 
   const generateBotResponse = async (history: ChatItem[]) => {
     const update = (text: string, isError = false) => {
@@ -151,8 +178,8 @@ const ChatbotItems: React.FC = () => {
 
       update(text);
     } catch (err: any) {
-      console.error("Catch Error:", err); //  log chi tiết lỗi
-      update("Đã xảy ra lỗi gì đó !!!", true); //  hiển thị cho user
+      console.error("Catch Error:", err);
+      update("Đã xảy ra lỗi gì đó !!!", true);
     }
   };
 
@@ -190,7 +217,14 @@ hover:scale-110 hover:bg-slate-800 hover:shadow-2xl active:scale-95 "
           <div className="bg-sky-500 text-white p-4 flex justify-between items-center">
             <div className="flex items-center gap-2">
               <ChatbotIcon />
-              <h2 className="font-semibold">Chatbot</h2>
+              <div>
+                <h2 className="font-semibold">Chatbot</h2>
+                {!contextLoaded && (
+                  <span className="text-xs text-sky-100 animate-pulse">
+                    Đang tải dữ liệu...
+                  </span>
+                )}
+              </div>
             </div>
             <button onClick={() => setOpen(false)}>✕</button>
           </div>
