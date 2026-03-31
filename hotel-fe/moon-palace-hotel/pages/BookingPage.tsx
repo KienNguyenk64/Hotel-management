@@ -200,7 +200,7 @@ export const BookingPage: React.FC = () => {
             <p className="flex justify-between">
               <span className="text-slate-500">Tổng tiền:</span>{" "}
               <span className="font-bold text-slate-900 text-lg">
-                ${successData.totalAmount.toLocaleString()}
+                {successData.totalAmount.toLocaleString()} VND
               </span>
             </p>
             <p className="flex justify-between">
@@ -373,8 +373,7 @@ export const BookingPage: React.FC = () => {
               {/* Section 2: Guest Info */}
               <div className="p-6 md:p-8">
                 <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-                  <User size={20} className="text-indigo-500" /> Thông tin khách
-                  hàng
+                  <User size={20} className="text-indigo-500" /> Thông tin khách hàng
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
