@@ -951,7 +951,7 @@ export const UserProfile: React.FC = () => {
                   </div>
 
                   {/* Stay Preferences */}
-                  <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
+                  {/* <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
                     <SectionHeader
                       icon={Armchair}
                       title="Sở thích lưu trú"
@@ -993,7 +993,7 @@ export const UserProfile: React.FC = () => {
                         }
                       />
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Save Actions */}
                   <div className="flex items-center justify-end gap-4 pt-4">
