@@ -404,7 +404,7 @@ export const AdminGuests: React.FC = () => {
               >
                 <option value="">Tất cả vai trò</option>
                 <option value="ADMIN">Quản trị viên</option>
-                <option value="STAFF">Nhân viên</option>
+                {/* <option value="STAFF">Nhân viên</option> */}
                 <option value="USER">Khách hàng</option>
               </select>
               <Filter
@@ -465,9 +465,9 @@ export const AdminGuests: React.FC = () => {
                     <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">
                       Vai trò
                     </th>
-                    <th className="px-6 py-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    {/* <th className="px-6 py-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wider">
                       Trạng thái
-                    </th>
+                    </th> */}
                     <th className="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider pr-8">
                       Thao tác
                     </th>
@@ -556,7 +556,7 @@ export const AdminGuests: React.FC = () => {
                             {getRoleLabel(user.role)}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-center align-middle">
+                        {/* <td className="px-6 py-4 whitespace-nowrap text-center align-middle">
                           <div
                             className="flex flex-col items-center gap-2"
                             onClick={(e) => e.stopPropagation()}
@@ -582,7 +582,7 @@ export const AdminGuests: React.FC = () => {
                               </button>
                             )}
                           </div>
-                        </td>
+                        </td> */}
                         <td className="px-6 py-4 whitespace-nowrap text-right align-middle pr-8">
                           <div className="flex items-center justify-end gap-2 opacity-70 group-hover/row:opacity-100 transition-opacity">
                             <button
