@@ -751,9 +751,6 @@ export const UserProfile: React.FC = () => {
                     <History size={20} className="text-indigo-500" /> Lịch sử
                     đặt phòng
                   </h3>
-                  <button className="text-sm font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 px-4 py-2 rounded-lg">
-                    Tải xuống báo cáo
-                  </button>
                 </div>
                 <div className="p-6">
                   {dashboardData?.recentBookings &&
