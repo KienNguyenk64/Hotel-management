@@ -148,7 +148,9 @@ export const Footer: React.FC = () => {
                 className="bg-lux-800 border border-lux-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-lux-500 transition-colors text-sm"
               />
               <button className="bg-lux-500 text-lux-900 font-bold py-3 rounded-xl hover:bg-lux-400 transition-colors text-sm">
+                <Link to="/register" className="block">
                 Đăng ký ngay
+                </Link>
               </button>
             </form>
           </div>
