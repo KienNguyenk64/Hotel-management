@@ -142,11 +142,11 @@ export const Footer: React.FC = () => {
               Đăng ký để nhận những ưu đãi mới nhất.
             </p>
             <form className="flex flex-col gap-3">
-              <input
+              {/* <input
                 type="email"
                 placeholder="Email của bạn"
                 className="bg-lux-800 border border-lux-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-lux-500 transition-colors text-sm"
-              />
+              /> */}
               <button className="bg-lux-500 text-lux-900 font-bold py-3 rounded-xl hover:bg-lux-400 transition-colors text-sm">
                 <Link to="/register" className="block">
                 Đăng ký ngay
