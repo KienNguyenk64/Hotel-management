@@ -807,6 +807,8 @@ export const AdminBookings: React.FC = () => {
                                 )}{" "}
                                 Check-in
                               </button>
+                              
+                              
                             )}
                             {booking.status === BookingStatus.CHECKED_IN && (
                               <button
