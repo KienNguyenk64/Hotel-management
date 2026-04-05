@@ -23,7 +23,7 @@ public class BookingEmailService {
     @Value("${spring.mail.username}")
     private String fromEmail;
 
-    @Value("${app.hotel.name:Luxury Hotel}")
+    @Value("${app.hotel.name:Moon Hotel}")
     private String hotelName;
 
     @Async
