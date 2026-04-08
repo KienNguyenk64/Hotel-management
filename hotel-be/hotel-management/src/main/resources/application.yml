@@ -119,3 +119,14 @@ cloudinary:
   cloud-name: dip29tjll
   api-key: 169528795191882
   api-secret: "K00VsLFLK5Ldtoxne7Hy7XbBe4w"
+
+# VNPAY CONFIGURATION (SANDBOX)
+vnpay:
+  tmnCode: "TWWU77I3"
+  hashSecret: "9ZCW3REYX6XLAU0OBNVZN0D28ZRSORW2"
+  payUrl: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+  returnUrl: "http://localhost:8080/api/payments/vnpay/return"
+  version: "2.1.0"
+  command: "pay"
+  apiUrl: "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction"
+
