@@ -5,7 +5,6 @@ import {
   Filter,
   CheckCircle,
   XCircle,
-  MoreHorizontal,
   FileText,
   Loader2,
   LogIn,
@@ -35,7 +34,7 @@ import {
   Booking,
   BookingStatus,
   BookingStatusDisplay,
-  PaymentStatus,  
+  PaymentStatus,
   PaymentStatusDisplay,
   BookingStats,
   BookingSearchCriteria,
@@ -198,7 +197,7 @@ export const AdminBookings: React.FC = () => {
     }
 
     if (!confirm("Bạn có chắc chắn muốn thực hiện hành động này?")) return;
-    
+
     setActionLoading(id);
     try {
       let response;
@@ -793,22 +792,34 @@ export const AdminBookings: React.FC = () => {
                               </>
                             )}
                             {booking.status === BookingStatus.CONFIRMED && (
-                              <button
-                                onClick={(e) =>
-                                  handleAction(booking.id, "check-in", e)
-                                }
-                                disabled={!!actionLoading}
-                                className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-md shadow-blue-200 hover:bg-blue-700 transition-all flex items-center gap-1.5"
-                              >
-                                {actionLoading === booking.id ? (
-                                  <Loader2 size={12} className="animate-spin" />
-                                ) : (
-                                  <LogIn size={12} />
-                                )}{" "}
-                                Check-in
-                              </button>
-                              
-                              
+                              <>
+                                <button
+                                  onClick={(e) =>
+                                    handleAction(booking.id, "check-in", e)
+                                  }
+                                  disabled={!!actionLoading}
+                                  className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-md shadow-blue-200 hover:bg-blue-700 transition-all flex items-center gap-1.5"
+                                >
+                                  {actionLoading === booking.id ? (
+                                    <Loader2
+                                      size={12}
+                                      className="animate-spin"
+                                    />
+                                  ) : (
+                                    <LogIn size={12} />
+                                  )}{" "}
+                                  Check-in
+                                </button>
+                                <button
+                                  onClick={(e) =>
+                                    handleAction(booking.id, "cancel", e)
+                                  }
+                                  disabled={!!actionLoading}
+                                  className="p-1.5 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                                >
+                                  <XCircle size={18} />
+                                </button>
+                              </>
                             )}
                             {booking.status === BookingStatus.CHECKED_IN && (
                               <button
