@@ -541,6 +541,7 @@ public class BookingServiceImpl implements IBookingService {
         booking.setPaymentTransactionId(request.getPaymentTransactionId());
         booking.setPaymentDate(LocalDateTime.now());
         booking.setUpdatedDate(LocalDateTime.now());
+        booking.setStatus(BookingStatus.CONFIRMED);
 
         Booking paidBooking = bookingRepository.save(booking);
         log.info("Payment processed for booking: {}", booking.getBookingNumber());
