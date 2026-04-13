@@ -126,6 +126,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/reviews/**").permitAll()
                         .requestMatchers("/api/dashboard/**").permitAll()
                         .requestMatchers("/api/chatbot/**").permitAll()
+                        .requestMatchers("/api/payments/**").permitAll()
 
                         // Admin endpoints - MUST have ADMIN role
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
