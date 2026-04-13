@@ -720,6 +720,9 @@ export const paymentApi = {
     method: string;
   }) => api.post<ApiResponse<any>>("/payments/process", data),
 
+  createVnPayUrl: (data: { bookingId: string }) => 
+    api.post<ApiResponse<{ vnpayUrl: string }>>("/payments/vnpay/create-url", data),
+
   simulatePayment: (bookingId: string) =>
     new Promise<ApiResponse<any>>((resolve) => {
       setTimeout(() => {
