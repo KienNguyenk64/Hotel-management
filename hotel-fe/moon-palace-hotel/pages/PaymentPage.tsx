@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { bookingApi } from '../services/api';
+import { bookingApi, paymentApi } from '../services/api';
 import { Booking, PaymentMethod as PaymentMethodEnum } from '../types';
 import { 
   CreditCard, QrCode, Wallet, ChevronLeft, ShieldCheck, 
@@ -68,6 +68,16 @@ export const PaymentPage: React.FC = () => {
     setError(null);
 
     try {
+        if (selectedMethod === 'E_WALLET') {
+            const response = await paymentApi.createVnPayUrl({ bookingId: bookingId! });
+            if (response.data.status === 'success' && response.data.data?.vnpayUrl) {
+                window.location.href = response.data.data.vnpayUrl;
+                return; // Do not set processing to false, wait for redirect
+            } else {
+                throw new Error("Không thể tạo kết nối đến VNPay");
+            }
+        }
+
         // Call real payment API
         const paymentMethod = mapPaymentMethod(selectedMethod);
         const transactionId = `TXN-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -86,7 +96,8 @@ export const PaymentPage: React.FC = () => {
         }
     } catch (err: any) {
         console.error('Payment error:', err);
-        const errorMsg = err.response?.data?.message || 
+        // const errorMsg = err.response?.data?.message || 
+        const errorMsg = err.response?.data?.message || err.message || 
           "Giao dịch thất bại. Vui lòng kiểm tra lại thông tin thẻ hoặc thử phương thức khác.";
         setError(errorMsg);
     } finally {
