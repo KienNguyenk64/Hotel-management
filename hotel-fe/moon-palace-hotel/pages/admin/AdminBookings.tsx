@@ -28,6 +28,8 @@ import {
   DollarSign,
   PieChart,
   MessageSquare,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { bookingApi } from "../../services/api";
 import {
@@ -873,26 +875,88 @@ export const AdminBookings: React.FC = () => {
 
             {/* Pagination */}
             {bookings.length > 0 && (
-              <div className="bg-white px-6 py-4 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">
+              <div className="bg-white px-6 py-4 border-t border-slate-100 flex items-center justify-center">
+                {/* <span className="text-xs text-slate-500 font-bold uppercase tracking-wider w-full sm:w-auto text-center sm:text-left">
                   Trang {page + 1} / {totalPages || 1}
-                </span>
-                <div className="flex gap-2">
+                </span> */}
+                <div className="flex gap-1.5 items-center justify-center">
                   <button
                     onClick={() => setPage((p) => Math.max(0, p - 1))}
                     disabled={page === 0}
-                    className="px-4 py-2 border border-slate-200 bg-white rounded-lg text-sm font-bold text-slate-600 hover:bg-slate-100 disabled:opacity-50 transition-colors"
+                    className="px-3 py-2 border border-slate-200 bg-white rounded-lg text-sm font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-50 transition-colors"
                   >
-                    Trước
+                    <ChevronLeft size={16} />
                   </button>
+
+                  {/* Page Numbers */}
+                  <div className="hidden sm:flex gap-1.5 items-center">
+                    {(() => {
+                      const pages = [];
+                      if (totalPages <= 7) {
+                        for (let i = 0; i < totalPages; i++) {
+                          pages.push(i);
+                        }
+                      } else {
+                        if (page <= 2) {
+                          pages.push(0, 1, 2, 3, "...", totalPages - 1);
+                        } else if (page >= totalPages - 3) {
+                          pages.push(
+                            0,
+                            "...",
+                            totalPages - 4,
+                            totalPages - 3,
+                            totalPages - 2,
+                            totalPages - 1,
+                          );
+                        } else {
+                          pages.push(
+                            0,
+                            "...",
+                            page - 1,
+                            page,
+                            page + 1,
+                            "...",
+                            totalPages - 1,
+                          );
+                        }
+                      }
+
+                      return pages.map((p, index) => {
+                        if (p === "...") {
+                          return (
+                            <span
+                              key={`ellipsis-${index}`}
+                              className="px-1 text-slate-400 font-bold"
+                            >
+                              ...
+                            </span>
+                          );
+                        }
+                        return (
+                          <button
+                            key={`page-${p}`}
+                            onClick={() => setPage(p as number)}
+                            className={`min-w-[36px] h-9 px-2 rounded-lg text-sm font-bold transition-colors flex items-center justify-center ${
+                              page === p
+                                ? "bg-indigo-600 text-white shadow-md shadow-indigo-200 border-transparent"
+                                : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                            }`}
+                          >
+                            {(p as number) + 1}
+                          </button>
+                        );
+                      });
+                    })()}
+                  </div>
+
                   <button
                     onClick={() =>
                       setPage((p) => Math.min(totalPages - 1, p + 1))
                     }
-                    disabled={page >= totalPages - 1}
-                    className="px-4 py-2 border border-slate-200 bg-white rounded-lg text-sm font-bold text-slate-600 hover:bg-slate-100 disabled:opacity-50 transition-colors"
+                    disabled={page >= totalPages - 1 || totalPages === 0}
+                    className="px-3 py-2 border border-slate-200 bg-white rounded-lg text-sm font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-50 transition-colors"
                   >
-                    Sau
+                    <ChevronRight size={16} />
                   </button>
                 </div>
               </div>
