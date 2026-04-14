@@ -149,8 +149,8 @@ export const AdminSettings: React.FC = () => {
                            <h3 className="font-bold text-lux-900 mb-4 flex items-center gap-2"><CreditCard size={18}/> Cổng thanh toán</h3>
                            <div className="flex items-center justify-between p-4 border border-lux-100 rounded-xl">
                                <div className="flex items-center gap-3">
-                                   <div className="w-10 h-6 bg-blue-600 rounded text-white text-[8px] flex items-center justify-center font-bold">STRIPE</div>
-                                   <span className="font-bold text-lux-900">Stripe Payments</span>
+                                   <div className="w-10 h-6 bg-blue-600 rounded text-white text-[8px] flex items-center justify-center font-bold">VNPay</div>
+                                   <span className="font-bold text-lux-900">VNPay</span>
                                </div>
                                <label className="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" defaultChecked className="sr-only peer" />

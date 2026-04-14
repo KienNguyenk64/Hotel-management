@@ -86,7 +86,6 @@ app:
 
   frontend:
     url: http://localhost:5173/       # URL frontend (dev)
-    # url: https://moonelia.site/      # URL frontend (prod)
 
   verification:
     token:
