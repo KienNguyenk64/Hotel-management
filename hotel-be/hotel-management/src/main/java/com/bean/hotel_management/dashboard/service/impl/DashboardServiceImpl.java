@@ -807,13 +807,15 @@ public class DashboardServiceImpl implements IDashboardService {
 
     private List<UpcomingBooking> getUserUpcomingBookings(String userId) {
         LocalDate today = LocalDate.now();
-
+        log.info("Today: {}", today);
         return bookingRepository.findByUserId(userId).stream()
-                .filter(b -> b.getCheckInDate().isAfter(today))
+                .filter(b -> !b.getCheckInDate().isBefore(today))
                 .filter(b -> b.getStatus() != BookingStatus.CANCELLED)
-                .sorted(Comparator.comparing(Booking::getCheckInDate))
+                .min(Comparator.comparing(Booking::getCheckInDate))
                 .map(this::mapToUpcomingBooking)
-                .collect(Collectors.toList());
+                .map(List::of)
+                .orElse(List.of());
+//                .collect(Collectors.toList());
     }
 
     private UpcomingBooking mapToUpcomingBooking(Booking booking) {
