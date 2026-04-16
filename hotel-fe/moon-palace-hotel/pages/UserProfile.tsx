@@ -524,20 +524,13 @@ export const UserProfile: React.FC = () => {
                               {dashboardData.upcomingBookings[0].roomName}
                             </h4>
                             <p className="text-slate-300 text-sm flex items-center gap-2">
-                              <MapPin size={14} /> Moon Palace Luxury Resort
+                              <MapPin size={14} /> Moon Hotel
                             </p>
                           </div>
                           <div className="absolute top-4 right-4 z-20 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-xl text-center">
-                            <span className="block text-xl font-bold leading-none">
-                              {
-                                dashboardData.upcomingBookings[0]
-                                  .daysUntilCheckIn
-                              }
-                            </span>
-                            <span className="text-[10px] uppercase font-bold text-slate-200">
-                              Ngày nữa
-                            </span>
-                          </div>
+                                                <span className="block text-xl font-bold leading-none">{dashboardData.upcomingBookings[0].daysUntilCheckIn === 0 ? 'Hôm nay' : `${dashboardData.upcomingBookings[0].daysUntilCheckIn} ngày nữa`}</span>
+                                                {/* <span className="text-[10px] uppercase font-bold text-slate-200">Ngày nữa</span> */}
+                                            </div>
                         </div>
                         <div className="p-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
                           <div className="space-y-1">
