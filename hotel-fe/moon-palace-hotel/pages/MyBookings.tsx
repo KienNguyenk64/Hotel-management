@@ -368,7 +368,8 @@ export const MyBookings: React.FC = () => {
                 Đóng
               </button>
 
-              {selectedBooking.status === BookingStatus.CONFIRMED &&
+              {(selectedBooking.status === BookingStatus.CONFIRMED ||
+                selectedBooking.status === BookingStatus.PENDING) &&
                 selectedBooking.paymentStatus !== PaymentStatus.PAID && (
                   <button
                     onClick={() =>
@@ -526,21 +527,32 @@ export const MyBookings: React.FC = () => {
                       {activeTab === "upcoming" && (
                         <>
                           {booking.canCancel && (
-                            <button
-                              onClick={() => handleCancelBooking(booking.id)}
-                              disabled={actionLoading === booking.id}
-                              className="px-4 py-2 border border-rose-100 text-rose-600 rounded-xl text-sm font-bold hover:bg-rose-50 transition-colors flex items-center gap-2 ml-auto"
-                            >
-                              {actionLoading === booking.id ? (
-                                <Loader2 size={14} className="animate-spin" />
-                              ) : (
-                                <X size={16} />
-                              )}{" "}
-                              Hủy phòng
-                            </button>
+                            <>
+                              {/* <button
+                                onClick={() =>
+                                  navigate(`/payment?bookingId=${selectedBooking.id}`)
+                                }
+                                className="px-5 py-2.5 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 flex items-center gap-2"
+                              >
+                                <CreditCard size={14} /> Thanh toán ngay
+                              </button> */}
+                              <button
+                                onClick={() => handleCancelBooking(booking.id)}
+                                disabled={actionLoading === booking.id}
+                                className="px-4 py-2 border border-rose-100 text-rose-600 rounded-xl text-sm font-bold hover:bg-rose-50 transition-colors flex items-center gap-2 ml-auto"
+                              >
+                                {actionLoading === booking.id ? (
+                                  <Loader2 size={14} className="animate-spin" />
+                                ) : (
+                                  <X size={16} />
+                                )}{" "}
+                                Hủy phòng
+                              </button>
+                            </>
                           )}
                           {/* Payment Button */}
-                          {booking.status === BookingStatus.CONFIRMED &&
+                          {(booking.status === BookingStatus.CONFIRMED ||
+                            booking.status === BookingStatus.PENDING) &&
                             booking.paymentStatus !== PaymentStatus.PAID && (
                               <button
                                 onClick={() =>
