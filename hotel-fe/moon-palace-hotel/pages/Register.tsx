@@ -68,7 +68,7 @@ export const Register: React.FC = () => {
                 <Moon size={28} className="fill-current" />
             </div>
             <h1 className="text-2xl font-serif font-bold text-slate-900">Tạo tài khoản thành viên</h1>
-            <p className="text-slate-500 text-sm font-medium mt-1">Trải nghiệm kỳ nghỉ thượng lưu tại Moon Palace</p>
+            <p className="text-slate-500 text-sm font-medium mt-1">Trải nghiệm kỳ nghỉ tại Moon Light</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
