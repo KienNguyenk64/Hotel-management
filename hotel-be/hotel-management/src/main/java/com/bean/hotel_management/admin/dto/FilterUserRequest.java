@@ -21,7 +21,6 @@ public class FilterUserRequest {
     private String role = "user";
     private Boolean isActive;
     private Boolean isLocked;
-
     public Integer getSize() {
         return size == null ? 10 : size;
     }
