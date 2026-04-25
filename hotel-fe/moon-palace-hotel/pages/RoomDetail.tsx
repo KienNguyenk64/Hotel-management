@@ -1309,6 +1309,7 @@ export const RoomDetail: React.FC = () => {
         </div>
       </div>
 
+
       <style>{`
         @keyframes bounce-slow {
           0%, 100% { transform: translateY(0); }
