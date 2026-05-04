@@ -89,11 +89,11 @@ app:
 
   verification:
     token:
-      expiration: 86400000            # Token x�c th?c email (24h)
+      expiration: 86400000            # Token xác thực email (24h)
 
   reset:
     token:
-      expiration: 36000000            # Token reset m?t kh?u (1h)
+      expiration: 36000000            # Token reset mật khẩu (1h)
 
   upload:
     max-file-size: 50485760       # 5MB
