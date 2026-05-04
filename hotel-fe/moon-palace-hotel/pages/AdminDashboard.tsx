@@ -174,6 +174,7 @@ export const AdminDashboard: React.FC = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [chartTab, setChartTab] = useState<"REVENUE" | "BOOKINGS">("REVENUE");
 
+  console.log("Dashboard data:", data); // Debug log
   // Booking Modal State
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [loadingBookingDetail, setLoadingBookingDetail] = useState(false);
@@ -570,7 +571,7 @@ export const AdminDashboard: React.FC = () => {
             />
             <StatCard
               title="Tỷ lệ lấp đầy"
-              value={`${((data?.overviewStats?.occupancyRate || 0) * 100).toFixed(0)}%`}
+              value={`${((data?.overviewStats?.occupancyRate || 0))}%`}
               subValue={`${data?.roomStats?.availableRooms || 0} phòng trống`}
               icon={Home}
               trend={

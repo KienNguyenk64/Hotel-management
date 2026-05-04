@@ -346,6 +346,7 @@ export const UserProfile: React.FC = () => {
     user.avatarUrl ||
     `https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=0F172A&color=fff&bold=true`;
 
+    console.log("User Dashboard Data:", dashboardData); // Debugging line
   return (
     <div className="bg-slate-50 min-h-screen pb-12 font-sans">
       {/* Notification Toast */}
@@ -664,7 +665,7 @@ export const UserProfile: React.FC = () => {
                       Thống kê hoạt động
                     </h3>
                     <div className="space-y-6">
-                      <div className="flex items-center gap-4">
+                      {/* <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
                           <CheckCircle2 size={24} />
                         </div>
@@ -679,7 +680,7 @@ export const UserProfile: React.FC = () => {
                             </span>
                           </p>
                         </div>
-                      </div>
+                      </div> */}
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
                           <CreditCard size={24} />
