@@ -22,7 +22,7 @@ API RESTful được xây dựng bằng thiết kế hướng Domain-driven ho�
   - **Cloudinary**: Lưu trữ, quản lý hình ảnh (avatar, ảnh phòng...).
   - **Gmail SMTP**: Gửi email xác thực, đặt phòng.
 
-### 2. `hotel-fe/moon-palace-hotel` (Front-end)
+### 2. `hotel-fe/moon-hotel` (Front-end)
 
 Giao diện người dùng Web App bao gồm cả trang dành cho khách hàng và trang quản trị (Admin Dashboard).
 
