@@ -7,6 +7,7 @@ import {
   Calendar,
   CreditCard,
   Clock,
+  Moon,
   Gift,
   Settings,
   Lock,
@@ -17,7 +18,6 @@ import {
   Thermometer,
   Accessibility,
   Armchair,
-  BedDouble,
   Star,
   History,
   Sparkles,
@@ -28,11 +28,16 @@ import {
   Upload,
   Camera,
   Trash2,
-  Moon,
 } from "lucide-react";
-import { UserDashboardData, UserPreferences } from "../types";
+import { Booking, UserDashboardData, UserPreferences } from "../types";
 import { useAuth } from "../context/AuthContext";
-import { dashboardApi, authApi, userApi } from "../services/api";
+import {
+  dashboardApi,
+  authApi,
+  userApi,
+  bookingApi,
+  roomApi,
+} from "../services/api";
 
 // --- Components ---
 
@@ -109,6 +114,11 @@ export const UserProfile: React.FC = () => {
     null,
   );
   const [loading, setLoading] = useState(true);
+
+  // Separate state for history tab - dùng bookingApi thay vì dashboard
+  const [recentBookings, setRecentBookings] = useState<Booking[]>([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [roomImages, setRoomImages] = useState<Record<string, string>>({});
 
   // Avatar Upload State
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
@@ -191,6 +201,47 @@ export const UserProfile: React.FC = () => {
 
     fetchDashboard();
   }, [user]);
+
+  // Fetch lịch sử booking từ bookingApi (có đầy đủ roomId, roomName, ảnh)
+  useEffect(() => {
+    const fetchHistory = async () => {
+      if (!user || activeTab !== "history") return;
+      setHistoryLoading(true);
+      try {
+        const response = await bookingApi.getMyBookings(0, 50);
+        if (response.data.status === "success") {
+          const bookings = response.data.data.content;
+          setRecentBookings(bookings);
+
+          // Fetch ảnh phòng
+          const uniqueRoomIds = [
+            ...new Set(bookings.map((b: Booking) => b.roomId).filter(Boolean)),
+          ];
+          const imageResults = await Promise.allSettled(
+            uniqueRoomIds.map((id: string) => roomApi.getById(id)),
+          );
+          const imageMap: Record<string, string> = {};
+          imageResults.forEach((result, index) => {
+            if (
+              result.status === "fulfilled" &&
+              result.value.data.status === "success"
+            ) {
+              const room = result.value.data.data;
+              imageMap[uniqueRoomIds[index]] =
+                room.thumbnailImage || room.images?.[0] || "";
+            }
+          });
+          setRoomImages(imageMap);
+        }
+      } catch (error) {
+        console.error("Failed to load booking history", error);
+      } finally {
+        setHistoryLoading(false);
+      }
+    };
+
+    fetchHistory();
+  }, [user, activeTab]);
 
   const showNotification = (message: string, type: "success" | "error") => {
     setNotification({ message, type });
@@ -346,7 +397,6 @@ export const UserProfile: React.FC = () => {
     user.avatarUrl ||
     `https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=0F172A&color=fff&bold=true`;
 
-    console.log("User Dashboard Data:", dashboardData); // Debugging line
   return (
     <div className="bg-slate-50 min-h-screen pb-12 font-sans">
       {/* Notification Toast */}
@@ -525,17 +575,19 @@ export const UserProfile: React.FC = () => {
                               {dashboardData.upcomingBookings[0].roomName}
                             </h4>
                             <p className="text-slate-300 text-sm flex items-center gap-2">
-                              <MapPin size={14} /> Moon Hotel
+                              <MapPin size={14} /> Moon Palace Luxury Resort
                             </p>
                           </div>
                           <div className="absolute top-4 right-4 z-20 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-xl text-center">
                             <span className="block text-xl font-bold leading-none">
-                              {dashboardData.upcomingBookings[0]
-                                .daysUntilCheckIn === 0
-                                ? "Hôm nay"
-                                : `${dashboardData.upcomingBookings[0].daysUntilCheckIn} ngày nữa`}
+                              {
+                                dashboardData.upcomingBookings[0]
+                                  .daysUntilCheckIn
+                              }
                             </span>
-                            {/* <span className="text-[10px] uppercase font-bold text-slate-200">Ngày nữa</span> */}
+                            <span className="text-[10px] uppercase font-bold text-slate-200">
+                              Ngày nữa
+                            </span>
                           </div>
                         </div>
                         <div className="p-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -581,7 +633,7 @@ export const UserProfile: React.FC = () => {
                         </h3>
                         <p className="text-slate-500 mb-6 max-w-md mx-auto">
                           Hãy lên kế hoạch cho kỳ nghỉ dưỡng tiếp theo của bạn
-                          tại MoonLight.
+                          tại Moon Palace.
                         </p>
                         <button
                           onClick={() => navigate("/rooms")}
@@ -626,7 +678,7 @@ export const UserProfile: React.FC = () => {
                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                               />
                               <div className="absolute top-2 right-2 bg-slate-900/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-sm font-bold">
-                                {room.pricePerNight}₫
+                                {room.pricePerNight.toLocaleString()} VND
                               </div>
                             </div>
                             <div>
@@ -666,21 +718,14 @@ export const UserProfile: React.FC = () => {
                     </h3>
                     <div className="space-y-6">
                       {/* <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                          <CheckCircle2 size={24} />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-xs font-bold text-slate-400 uppercase">
-                            Hoàn thành
-                          </p>
-                          <p className="text-xl font-bold text-slate-900">
-                            {dashboardData.userStats.completedBookings}{" "}
-                            <span className="text-sm text-slate-400 font-medium">
-                              chuyến đi
-                            </span>
-                          </p>
-                        </div>
-                      </div> */}
+                                        <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                                            <CheckCircle2 size={24}/>
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="text-xs font-bold text-slate-400 uppercase">Hoàn thành</p>
+                                            <p className="text-xl font-bold text-slate-900">{dashboardData.userStats.completedBookings} <span className="text-sm text-slate-400 font-medium">chuyến đi</span></p>
+                                        </div>
+                                    </div> */}
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
                           <CreditCard size={24} />
@@ -691,7 +736,7 @@ export const UserProfile: React.FC = () => {
                           </p>
                           <p className="text-xl font-bold text-slate-900">
                             {dashboardData.userStats.totalSpent.toLocaleString()}
-                            ₫
+                            VND
                           </p>
                         </div>
                       </div>
@@ -713,31 +758,6 @@ export const UserProfile: React.FC = () => {
                       </div>
                     </div>
                   </div>
-
-                  {/* Rewards Box */}
-                  <div className="bg-gradient-to-br from-[#0B1120] to-[#1e293b] rounded-3xl p-6 shadow-xl text-white relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500 rounded-full blur-3xl -mr-16 -mt-16 opacity-30 group-hover:opacity-50 transition-opacity"></div>
-                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-500 rounded-full blur-3xl -ml-16 -mb-16 opacity-20 group-hover:opacity-40 transition-opacity"></div>
-
-                    <div className="relative z-10">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
-                          <Gift size={24} className="text-amber-400" />
-                        </div>
-                        <span className="text-xs font-bold bg-amber-400 text-slate-900 px-2 py-1 rounded-lg">
-                          GOLD TIER
-                        </span>
-                      </div>
-                      <h3 className="font-bold text-xl mb-2">Ưu đãi của bạn</h3>
-                      <p className="text-slate-400 text-sm mb-6">
-                        Bạn có 2 voucher chưa sử dụng cho kỳ nghỉ tiếp theo.
-                      </p>
-
-                      <button className="w-full py-3 bg-white text-slate-900 font-bold rounded-xl hover:bg-slate-100 transition-colors">
-                        Xem ví ưu đãi
-                      </button>
-                    </div>
-                  </div>
                 </div>
               </div>
             )}
@@ -750,71 +770,102 @@ export const UserProfile: React.FC = () => {
                     <History size={20} className="text-indigo-500" /> Lịch sử
                     đặt phòng
                   </h3>
+                  <button
+                    onClick={() => navigate("/my-bookings")}
+                    className="text-sm font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 px-4 py-2 rounded-lg"
+                  >
+                    Xem tất cả
+                  </button>
                 </div>
                 <div className="p-6">
-                  {dashboardData?.recentBookings &&
-                  dashboardData.recentBookings.length > 0 ? (
+                  {historyLoading ? (
+                    <div className="flex flex-col items-center justify-center py-20 text-slate-400">
+                      <Loader2
+                        className="animate-spin text-indigo-500 mb-4"
+                        size={40}
+                      />
+                      <p className="font-medium">Đang tải lịch sử...</p>
+                    </div>
+                  ) : recentBookings.length > 0 ? (
                     <div className="space-y-4">
-                      {dashboardData.recentBookings.map((booking) => (
-                        <div
-                          key={booking.id}
-                          className="flex flex-col md:flex-row items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl hover:border-indigo-200 hover:shadow-lg transition-all group"
-                        >
-                          <div className="flex items-center gap-6 w-full md:w-auto">
-                            <div className="w-20 h-20 bg-slate-100 rounded-xl overflow-hidden shrink-0 shadow-sm">
-                              {booking.room ? (
+                      {recentBookings.map((booking: Booking) => {
+                        const PLACEHOLDER =
+                          "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=400&auto=format&fit=crop";
+                        const roomImg =
+                          roomImages[booking.roomId] || PLACEHOLDER;
+                        const statusColors: Record<string, string> = {
+                          COMPLETED: "bg-emerald-100 text-emerald-600",
+                          CANCELLED: "bg-rose-100 text-rose-600",
+                          PENDING: "bg-amber-100 text-amber-600",
+                          CONFIRMED: "bg-blue-100 text-blue-600",
+                          CHECKED_IN: "bg-indigo-100 text-indigo-600",
+                          CHECKED_OUT: "bg-emerald-100 text-emerald-600",
+                        };
+                        const statusLabels: Record<string, string> = {
+                          COMPLETED: "Hoàn thành",
+                          CANCELLED: "Đã hủy",
+                          PENDING: "Chờ xác nhận",
+                          CONFIRMED: "Đã xác nhận",
+                          CHECKED_IN: "Đang lưu trú",
+                          CHECKED_OUT: "Đã trả phòng",
+                        };
+                        return (
+                          <div
+                            key={booking.id}
+                            className="flex flex-col md:flex-row items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl hover:border-indigo-200 hover:shadow-lg transition-all group"
+                          >
+                            <div className="flex items-center gap-6 w-full md:w-auto">
+                              <div className="w-20 h-20 bg-slate-100 rounded-xl overflow-hidden shrink-0 shadow-sm">
                                 <img
-                                  src={booking.room.thumbnailImage}
+                                  src={roomImg}
+                                  alt={booking.roomName}
                                   className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    e.currentTarget.src = PLACEHOLDER;
+                                  }}
                                 />
-                              ) : (
-                                <BedDouble className="w-full h-full p-6 text-slate-300" />
-                              )}
-                            </div>
-                            <div>
-                              <h4 className="font-bold text-slate-900 text-lg">
-                                {booking.roomName}
-                              </h4>
-                              <div className="flex items-center gap-3 mt-1.5 text-sm text-slate-500">
-                                <span className="flex items-center gap-1 font-mono">
-                                  <Hash size={12} /> {booking.bookingNumber}
-                                </span>
-                                <span className="w-1 h-1 rounded-full bg-slate-300"></span>
-                                <span>
-                                  {booking.checkInDate} — {booking.checkOutDate}
-                                </span>
+                              </div>
+                              <div>
+                                <h4 className="font-bold text-slate-900 text-lg">
+                                  {booking.roomName}
+                                </h4>
+                                <div className="flex items-center gap-3 mt-1.5 text-sm text-slate-500">
+                                  <span className="flex items-center gap-1 font-mono">
+                                    <Hash size={12} /> {booking.bookingNumber}
+                                  </span>
+                                  <span className="w-1 h-1 rounded-full bg-slate-300"></span>
+                                  <span>
+                                    {booking.checkInDate} —{" "}
+                                    {booking.checkOutDate}
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="flex items-center justify-between w-full md:w-auto gap-8 mt-4 md:mt-0 border-t md:border-t-0 border-slate-50 pt-4 md:pt-0">
-                            <div className="text-right">
-                              <p className="font-bold text-slate-900 text-lg">
-                                {booking.totalAmount.toLocaleString()}
-                                <span className="text-xs ml-1">VND</span>
-                              </p>
-                              <span
-                                className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide ${
-                                  booking.status === "COMPLETED"
-                                    ? "bg-emerald-100 text-emerald-600"
-                                    : booking.status === "CANCELLED"
-                                      ? "bg-rose-100 text-rose-600"
-                                      : "bg-amber-100 text-amber-600"
-                                }`}
+                            <div className="flex items-center justify-between w-full md:w-auto gap-8 mt-4 md:mt-0 border-t md:border-t-0 border-slate-50 pt-4 md:pt-0">
+                              <div className="text-right">
+                                <p className="font-bold text-slate-900 text-lg">
+                                  {booking.totalAmount.toLocaleString()} VND
+                                </p>
+                                <span
+                                  className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide ${statusColors[booking.status] || "bg-slate-100 text-slate-600"}`}
+                                >
+                                  {statusLabels[booking.status] ||
+                                    booking.status}
+                                </span>
+                              </div>
+                              <button
+                                onClick={() =>
+                                  navigate(`/room/${booking.roomId}`)
+                                }
+                                disabled={!booking.roomId}
+                                className="px-5 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-indigo-600 transition-colors shadow-lg shadow-slate-900/20 disabled:opacity-40 disabled:cursor-not-allowed"
                               >
-                                {booking.status}
-                              </span>
+                                Đặt lại
+                              </button>
                             </div>
-                            <button
-                              onClick={() =>
-                                navigate(`/room/${booking.roomId}`)
-                              }
-                              className="px-5 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-indigo-600 transition-colors shadow-lg shadow-slate-900/20"
-                            >
-                              Đặt lại
-                            </button>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   ) : (
                     <div className="text-center py-20">
@@ -945,51 +996,6 @@ export const UserProfile: React.FC = () => {
                       </div>
                     </div>
                   </div>
-
-                  {/* Stay Preferences */}
-                  {/* <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
-                    <SectionHeader
-                      icon={Armchair}
-                      title="Sở thích lưu trú"
-                      description="Tùy chỉnh trải nghiệm phòng theo ý muốn của bạn."
-                    />
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <PreferenceSelector
-                        icon={Thermometer}
-                        label="Nhiệt độ phòng"
-                        value={preferences.roomTemperature || "24°C"}
-                        options={["18°C", "20°C", "22°C", "24°C", "26°C"]}
-                        onChange={(v) =>
-                          setPreferences({ ...preferences, roomTemperature: v })
-                        }
-                      />
-                      <PreferenceSelector
-                        icon={Moon}
-                        label="Loại gối"
-                        value={preferences.pillowType || "Soft"}
-                        options={["Soft", "Firm", "Feather", "Hypoallergenic"]}
-                        onChange={(v) =>
-                          setPreferences({
-                            ...preferences,
-                            pillowType: v as any,
-                          })
-                        }
-                      />
-                      <PreferenceSelector
-                        icon={Accessibility}
-                        label="Tầng ưu tiên"
-                        value={preferences.floorPreference || "High"}
-                        options={["Low", "High", "Ground"]}
-                        onChange={(v) =>
-                          setPreferences({
-                            ...preferences,
-                            floorPreference: v as any,
-                          })
-                        }
-                      />
-                    </div>
-                  </div> */}
 
                   {/* Save Actions */}
                   <div className="flex items-center justify-end gap-4 pt-4">

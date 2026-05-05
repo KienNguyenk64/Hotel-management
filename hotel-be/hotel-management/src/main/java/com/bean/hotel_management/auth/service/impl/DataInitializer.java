@@ -37,7 +37,7 @@ public class DataInitializer implements CommandLineRunner {
             User admin = User.builder()
                     .email(adminEmail)
                     .username(adminUsername)
-                    .fullName("The Hotel Moonelia")
+                    .fullName("The Moon Hotel")
                     .cccdNumber("000000000")
                     .phoneNumber("0000000000")
                     .address("Admin Address")

@@ -450,10 +450,10 @@ export const AdminDashboard: React.FC = () => {
                     Dịch vụ & Phụ phí
                   </span>
                   <span className="font-bold text-slate-900">
-                    
                     {(
                       selectedBooking.additionalChargesTotal || 0
-                    ).toLocaleString()} vnđ
+                    ).toLocaleString()}{" "}
+                    vnđ
                   </span>
                 </div>
                 <div className="border-t border-slate-200 mt-3 pt-3 flex justify-between items-end">
@@ -571,7 +571,7 @@ export const AdminDashboard: React.FC = () => {
             />
             <StatCard
               title="Tỷ lệ lấp đầy"
-              value={`${((data?.overviewStats?.occupancyRate || 0))}%`}
+              value={`${data?.overviewStats?.occupancyRate || 0}%`}
               subValue={`${data?.roomStats?.availableRooms || 0} phòng trống`}
               icon={Home}
               trend={
@@ -753,13 +753,15 @@ export const AdminDashboard: React.FC = () => {
                     phòng phát sinh (bao gồm cả chưa thanh toán). Thực thu hiện
                     tại là{" "}
                     <span className="font-bold text-emerald-700">
-                      {(data?.revenueStats?.paidRevenue || 0).toLocaleString()} VND
+                      {(data?.revenueStats?.paidRevenue || 0).toLocaleString()}{" "}
+                      VND
                     </span>
                     . Khoản chờ thu là{" "}
                     <span className="font-bold text-orange-700">
                       {(
                         data?.revenueStats?.unpaidRevenue || 0
-                      ).toLocaleString()} VND
+                      ).toLocaleString()}{" "}
+                      VND
                     </span>
                     .
                   </p>
@@ -897,7 +899,7 @@ export const AdminDashboard: React.FC = () => {
                 </p>
               </div>
               <button
-                onClick={() => navigate("/admin/bookings")}
+                onClick={() => navigate("/bookings")}
                 className="text-sm font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 transition-colors px-4 py-2 bg-indigo-50 rounded-xl hover:bg-indigo-100"
               >
                 Xem tất cả <ChevronRight size={16} />

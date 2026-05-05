@@ -15,9 +15,9 @@ public class AdminSpecification {
     }
 
     private boolean matchesAllCriteria(User user, FilterUserRequest request) {
-        if (user.getRole() == Role.ADMIN) {
-            return false;
-        }
+//        if (user.getRole() == Role.ADMIN) {
+//            return false;
+//        }
 
         if (request == null) {
             return true;
