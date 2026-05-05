@@ -1,12 +1,12 @@
 import { roomApi } from "./services/api";
 import { Room } from "./types";
 
-/* ================================================================
+/* 
    STATIC DATA — trích xuất trực tiếp từ các trang About, Contact,
    Home, Services để chatbot hiểu đúng thông tin khách sạn.
-   ================================================================ */
+   */
 
-// ── About Page Data ──────────────────────────────────────────────
+// Dữ liệu trang giới thiệu
 const aboutData = {
   hotelName: "Moon Light Hotel",
   foundedYear: 2015,
@@ -33,7 +33,7 @@ const aboutData = {
   ],
 };
 
-// ── Contact Page Data ────────────────────────────────────────────
+// Dữ liệu trang liên hệ
 const contactData = {
   hotline: "+84 909 336 888",
   email: "contact@moonlight.com",
@@ -66,7 +66,7 @@ const contactData = {
   ],
 };
 
-// ── Home Page Data ───────────────────────────────────────────────
+// Dữ liệu trang home
 const homeData = {
   tagline:
     "Chào mừng bạn đến với MoonLight – nơi mang đến trải nghiệm nghỉ dưỡng sang trọng, tiện nghi và thoải mái.",
@@ -77,28 +77,44 @@ const homeData = {
     "Ẩm Thực Tinh Tế – Thưởng thức tinh hoa ẩm thực Á-Âu tại nhà hàng Moonlight trên tầng thượng.",
     "Tiện Nghi Hiện Đại – Smart TV, Wifi tốc độ cao và hệ thống điều khiển phòng thông minh 1 chạm.",
   ],
-  memberPromotion: "Đăng ký thành viên để nhận ưu đãi lên đến 20% cho lần đặt phòng đầu tiên.",
+  memberPromotion:
+    "Đăng ký thành viên để nhận ưu đãi lên đến 20% cho lần đặt phòng đầu tiên.",
 };
 
-// ── Services Page Data ───────────────────────────────────────────
+// Dữ liệu dịch vụ
 const servicesData = [
   {
     name: "Moonlight Spa & Wellness",
     description:
       "Tái tạo năng lượng với các liệu pháp trị liệu cổ truyền kết hợp công nghệ hiện đại.",
-    features: ["Massage đá nóng", "Xông hơi thảo dược", "Chăm sóc da mặt", "Yoga buổi sáng"],
+    features: [
+      "Massage đá nóng",
+      "Xông hơi thảo dược",
+      "Chăm sóc da mặt",
+      "Yoga buổi sáng",
+    ],
   },
   {
     name: "Nhà hàng The Eclipse",
     description:
       "Hành trình ẩm thực tinh tế từ Á sang Âu, được chế biến bởi các đầu bếp Michelin. Tận hưởng bữa tối lãng mạn dưới ánh nến và bầu trời sao.",
-    features: ["Fine Dining", "Hầm rượu vang", "Private Room", "View toàn cảnh"],
+    features: [
+      "Fine Dining",
+      "Hầm rượu vang",
+      "Private Room",
+      "View toàn cảnh",
+    ],
   },
   {
     name: "Hồ bơi Vô cực Horizon",
     description:
       "Hồ bơi nước mặn vô cực trên tầng thượng, nơi mặt nước hòa quyện với bầu trời. Quầy bar bên hồ bơi phục vụ cocktail nhiệt đới suốt cả ngày.",
-    features: ["Hồ bơi nước ấm", "Pool Bar", "Ghế tắm nắng VIP", "Khăn tắm miễn phí"],
+    features: [
+      "Hồ bơi nước ấm",
+      "Pool Bar",
+      "Ghế tắm nắng VIP",
+      "Khăn tắm miễn phí",
+    ],
   },
   {
     name: "Hội nghị & Sự kiện",
@@ -113,7 +129,7 @@ const servicesData = [
   },
 ];
 
-// ── Rooms Page — static labels ───────────────────────────────────
+// Rooms Page — thẻ tĩnh
 const roomTypeLabels: Record<string, string> = {
   STANDARD: "Phòng tiêu chuẩn",
   SUPERIOR: "Phòng cao cấp",
@@ -125,15 +141,11 @@ const roomTypeLabels: Record<string, string> = {
   HONEYMOON: "Phòng tân hôn",
 };
 
-const priceRanges = [
-  "Dưới 1 triệu VNĐ",
-  "1 - 5 triệu VNĐ",
-  "Trên 5 triệu VNĐ",
-];
+const priceRanges = ["Dưới 1 triệu VNĐ", "1 - 5 triệu VNĐ", "Trên 5 triệu VNĐ"];
 
-/* ================================================================
+/* 
    BUILD STATIC CONTEXT — phần không cần API
-   ================================================================ */
+    */
 
 function buildStaticContext(): string {
   const sections: string[] = [];
@@ -142,7 +154,7 @@ function buildStaticContext(): string {
   sections.push(`Giới thiệu:
 Tôi là chatbot hỗ trợ của ${aboutData.hotelName}, sẵn sàng giúp bạn đặt phòng, tìm hiểu về phòng nghỉ, dịch vụ, tiện ích và mọi thông tin liên quan đến khách sạn.`);
 
-  // About
+  // Giới thiệu
   sections.push(`Về khách sạn:
 - Tên: ${aboutData.hotelName}
 - Năm thành lập: ${aboutData.foundedYear}
@@ -155,15 +167,15 @@ Tôi là chatbot hỗ trợ của ${aboutData.hotelName}, sẵn sàng giúp bạ
 - Xếp hạng: ${homeData.starRating}
 - Đánh giá: ${homeData.rating}`);
 
-  // Core Values
+  // Giá trị cốt lõi
   sections.push(`Giá trị cốt lõi:
 ${aboutData.coreValues.map((v) => `- ${v}`).join("\n")}`);
 
-  // Milestones
+  // Cột mốc
   sections.push(`Giải thưởng & Thành tựu:
 ${aboutData.milestones.map((m) => `- ${m}`).join("\n")}`);
 
-  // Contact
+  // Liên hệ
   sections.push(`Thông tin liên hệ:
 - Hotline: ${contactData.hotline} (hỗ trợ đặt phòng 24/7)
 - Email: ${contactData.email} (phản hồi trong vòng 2 giờ)
@@ -171,32 +183,32 @@ ${aboutData.milestones.map((m) => `- ${m}`).join("\n")}`);
 - Giờ làm việc: ${contactData.workingHours}
 - Website: https://www.moonlighthotel.com`);
 
-  // Home highlights
+  // Điểm nổi bật
   sections.push(`Điểm nổi bật:
 ${homeData.highlights.map((h) => `- ${h}`).join("\n")}
 - ${homeData.memberPromotion}`);
 
-  // Services
+  // Dịch vụ & tiện ích
   sections.push(`Dịch vụ & Tiện ích:
 ${servicesData
-      .map(
-        (s) =>
-          `• ${s.name}: ${s.description}\n  Tính năng: ${s.features.join(", ")}`
-      )
-      .join("\n")}`);
+  .map(
+    (s) =>
+      `• ${s.name}: ${s.description}\n  Tính năng: ${s.features.join(", ")}`,
+  )
+  .join("\n")}`);
 
-  // Room types available
+  // Các loại phòng
   sections.push(`Các loại phòng có sẵn:
 ${Object.entries(roomTypeLabels)
-      .map(([key, label]) => `- ${label} (${key})`)
-      .join("\n")}
+  .map(([key, label]) => `- ${label} (${key})`)
+  .join("\n")}
 Khoảng giá tham khảo: ${priceRanges.join(" | ")}`);
 
   // FAQ
   sections.push(`Câu hỏi thường gặp (FAQ):
 ${contactData.faqs.map((f) => `Q: ${f.q}\nA: ${f.a}`).join("\n\n")}`);
 
-  // Booking guide
+  // Hướng dẫn đặt phòng
   sections.push(`Hướng dẫn đặt phòng:
 1. Truy cập trang "Phòng nghỉ" trên website
 2. Lọc theo loại phòng, khoảng giá hoặc sắp xếp theo giá
@@ -206,7 +218,7 @@ ${contactData.faqs.map((f) => `Q: ${f.q}\nA: ${f.a}`).join("\n\n")}`);
 6. Thanh toán đặt cọc 30% để xác nhận đặt phòng
 Hỗ trợ các phương thức thanh toán: Tiền mặt, Thẻ tín dụng, Chuyển khoản ngân hàng, MoMo, VNPay, ZaloPay`);
 
-  // Cancellation policy
+  // Chính sách hủy phòng
   sections.push(`Chính sách hủy phòng:
 - Khách hàng có thể hủy phòng khi đặt phòng đang ở trạng thái PENDING hoặc CONFIRMED
 - Hủy trước 3 ngày check-in: miễn phí
@@ -214,7 +226,7 @@ Hỗ trợ các phương thức thanh toán: Tiền mặt, Thẻ tín dụng, Ch
 - Hủy trong ngày check-in: phí 50% tổng tiền
 - Không thể hủy khi đã check-in`);
 
-  // Instruction for chatbot
+  // Lưu ý cho chatbot
   sections.push(`Lưu ý cho chatbot:
 - Luôn trả lời bằng tiếng Việt trừ khi khách hỏi bằng tiếng Anh
 - Khi trả lời về phòng, hãy sử dụng thông tin phòng động bên dưới (nếu có)
@@ -225,9 +237,9 @@ Hỗ trợ các phương thức thanh toán: Tiền mặt, Thẻ tín dụng, Ch
   return sections.join("\n\n");
 }
 
-/* ================================================================
+/* 
    BUILD DYNAMIC ROOM CONTEXT — gọi API để lấy phòng thực tế
-   ================================================================ */
+    */
 
 function formatRoomInfo(room: Room): string {
   const amenities = room.amenities?.length ? room.amenities.join(", ") : "N/A";
@@ -257,7 +269,10 @@ async function fetchDynamicRoomContext(): Promise<string> {
       return `\n\nDanh sách phòng hiện có (${rooms.length} phòng đang trống):\n${roomTexts}`;
     }
   } catch (error) {
-    console.warn("Chatbot: Không thể lấy dữ liệu phòng từ API, sử dụng thông tin tĩnh.", error);
+    console.warn(
+      "Chatbot: Không thể lấy dữ liệu phòng từ API, sử dụng thông tin tĩnh.",
+      error,
+    );
   }
 
   // Fallback: sử dụng thông tin tĩnh
@@ -283,4 +298,3 @@ export async function getFullCompanyContext(): Promise<string> {
   const dynamicRoomPart = await fetchDynamicRoomContext();
   return staticPart + dynamicRoomPart;
 }
-
