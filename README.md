@@ -115,4 +115,5 @@ Giao diện người dùng Web App bao gồm cả trang dành cho khách hàng v
 Dự án cung cấp sẵn một tài khoản Admin dùng để test tính năng quản trị:
 
 - **Email**: `admin@gmail.com`
+- **Tên Đăng Nhập**: `admin`
 - **Mật khẩu**: `Admin123@`
