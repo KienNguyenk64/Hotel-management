@@ -28,6 +28,8 @@ import {
   Upload,
   Camera,
   Trash2,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { Booking, UserDashboardData, UserPreferences } from "../types";
 import { useAuth } from "../context/AuthContext";
@@ -152,6 +154,9 @@ export const UserProfile: React.FC = () => {
   });
 
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordMessage, setPasswordMessage] = useState<{
     type: "success" | "error";
     text: string;
@@ -928,8 +933,14 @@ export const UserProfile: React.FC = () => {
                           <input
                             type="text"
                             value={profile.username}
-                            disabled
-                            className="w-full p-3 pl-10 bg-slate-50/50 rounded-xl border border-slate-200 text-sm font-bold text-slate-400 cursor-not-allowed"
+                            // disabled
+                            onChange={(e) =>
+                              setProfile({
+                                ...profile,
+                                username: e.target.value,
+                              })
+                            }
+                            className="w-full p-3 pl-10 bg-slate-50 rounded-xl border border-slate-200 text-sm font-bold focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition-all"
                           />
                           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">
                             @
@@ -944,8 +955,11 @@ export const UserProfile: React.FC = () => {
                           <input
                             type="email"
                             value={profile.email}
-                            disabled
-                            className="w-full p-3 pl-10 bg-slate-50/50 rounded-xl border border-slate-200 text-sm font-bold text-slate-400 cursor-not-allowed"
+                            // disabled
+                            onChange={(e) =>
+                              setProfile({ ...profile, email: e.target.value })
+                            }
+                            className="w-full p-3 pl-10 bg-slate-50 rounded-xl border border-slate-200 text-sm font-bold focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition-all"
                           />
                           <Mail
                             size={16}
@@ -1033,49 +1047,90 @@ export const UserProfile: React.FC = () => {
                         <label className="text-[10px] font-bold text-slate-400 uppercase">
                           Mật khẩu hiện tại
                         </label>
-                        <input
-                          type="password"
-                          value={passwordForm.oldPassword}
-                          onChange={(e) =>
-                            setPasswordForm({
-                              ...passwordForm,
-                              oldPassword: e.target.value,
-                            })
-                          }
-                          className="w-full p-3 bg-slate-50 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-300 transition-all"
-                        />
+                        <div className="relative">
+                          <input
+                            type={showOldPassword ? "text" : "password"}
+                            value={passwordForm.oldPassword}
+                            onChange={(e) =>
+                              setPasswordForm({
+                                ...passwordForm,
+                                oldPassword: e.target.value,
+                              })
+                            }
+                            className="w-full p-3 pr-10 bg-slate-50 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-300 transition-all"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowOldPassword(!showOldPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                          >
+                            {showOldPassword ? (
+                              <EyeOff size={16} />
+                            ) : (
+                              <Eye size={16} />
+                            )}
+                          </button>
+                        </div>
                       </div>
                       <div className="space-y-1.5">
                         <label className="text-[10px] font-bold text-slate-400 uppercase">
                           Mật khẩu mới
                         </label>
-                        <input
-                          type="password"
-                          value={passwordForm.newPassword}
-                          onChange={(e) =>
-                            setPasswordForm({
-                              ...passwordForm,
-                              newPassword: e.target.value,
-                            })
-                          }
-                          className="w-full p-3 bg-slate-50 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-300 transition-all"
-                        />
+                        <div className="relative">
+                          <input
+                            type={showNewPassword ? "text" : "password"}
+                            value={passwordForm.newPassword}
+                            onChange={(e) =>
+                              setPasswordForm({
+                                ...passwordForm,
+                                newPassword: e.target.value,
+                              })
+                            }
+                            className="w-full p-3 pr-10 bg-slate-50 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-300 transition-all"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowNewPassword(!showNewPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                          >
+                            {showNewPassword ? (
+                              <EyeOff size={16} />
+                            ) : (
+                              <Eye size={16} />
+                            )}
+                          </button>
+                        </div>
                       </div>
                       <div className="space-y-1.5">
                         <label className="text-[10px] font-bold text-slate-400 uppercase">
                           Xác nhận mật khẩu
                         </label>
-                        <input
-                          type="password"
-                          value={passwordForm.confirmPassword}
-                          onChange={(e) =>
-                            setPasswordForm({
-                              ...passwordForm,
-                              confirmPassword: e.target.value,
-                            })
-                          }
-                          className="w-full p-3 bg-slate-50 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-300 transition-all"
-                        />
+                        <div className="relative">
+                          <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            value={passwordForm.confirmPassword}
+                            onChange={(e) =>
+                              setPasswordForm({
+                                ...passwordForm,
+                                confirmPassword: e.target.value,
+                              })
+                            }
+                            className="w-full p-3 pr-10 bg-slate-50 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-300 transition-all"
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setShowConfirmPassword(!showConfirmPassword)
+                            }
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                          >
+                            {showConfirmPassword ? (
+                              <EyeOff size={16} />
+                            ) : (
+                              <Eye size={16} />
+                            )}
+                          </button>
+                        </div>
                       </div>
 
                       {passwordMessage && (

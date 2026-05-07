@@ -23,7 +23,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-
+import java.time.LocalDate;
+import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -32,6 +33,7 @@ public class DashboardServiceImpl implements IDashboardService {
     private final IBookingRepository bookingRepository;
     private final IRoomRepository roomRepository;
     private final IUserRepository userRepository;
+
 
 
     @Override
@@ -115,6 +117,10 @@ public class DashboardServiceImpl implements IDashboardService {
         LocalDate prevEnd = startDate.minusDays(1);
         List<Booking> prevPeriodBookings = filterBookingsByDateRange(allBookings, prevStart, prevEnd);
 
+        LocalDate prevMonthStart = startDate.minusMonths(1).withDayOfMonth(1);
+        LocalDate prevMonthEnd = prevMonthStart.withDayOfMonth(prevMonthStart.lengthOfMonth());
+        List<Booking> prevMonthBookings = filterBookingsByDateRange(allBookings, prevMonthStart, prevMonthEnd);
+
         Integer totalBookings = allBookings.size();
         Integer thisMonthBookings = periodBookings.size();
         Integer pendingBookings = countByStatus(periodBookings, BookingStatus.PENDING);
@@ -136,9 +142,9 @@ public class DashboardServiceImpl implements IDashboardService {
                 .orElse(0.0);
 
         // Growth calculation
-        Double bookingGrowthRate = prevPeriodBookings.size() > 0
-                ? ((thisMonthBookings - prevPeriodBookings.size())
-                / (double) prevPeriodBookings.size()) * 100
+        Double bookingGrowthRate = prevMonthBookings.size() > 0
+                ? ((thisMonthBookings - prevMonthBookings.size())
+                / (double) prevMonthBookings.size()) * 100
                 : 0.0;
 
         return BookingStats.builder()
@@ -231,54 +237,73 @@ public class DashboardServiceImpl implements IDashboardService {
 
     @Override
     public RevenueStats getRevenueStats(LocalDate startDate, LocalDate endDate) {
+//        Lấy dữ liệu booking
         List<Booking> allBookings = bookingRepository.findAll();
         List<Booking> periodBookings = filterBookingsByDateRange(allBookings, startDate, endDate);
 
-        // Previous period
+        // Tính khoảng thời gian trước đó (để so sánh tăng trưởng)
         long daysDiff = ChronoUnit.DAYS.between(startDate, endDate);
         LocalDate prevStart = startDate.minusDays(daysDiff);
         LocalDate prevEnd = startDate.minusDays(1);
         List<Booking> prevPeriodBookings = filterBookingsByDateRange(allBookings, prevStart, prevEnd);
 
+        LocalDate twoMonthsAgoStart = startDate.minusMonths(2).withDayOfMonth(1);
+        LocalDate twoMonthsAgoEnd = twoMonthsAgoStart.withDayOfMonth(twoMonthsAgoStart.lengthOfMonth());
+        List<Booking> twoMonthsAgoBookings = filterBookingsByDateRange(allBookings, twoMonthsAgoStart, twoMonthsAgoEnd);
+
+        LocalDate prevMonthStart = startDate.minusMonths(1).withDayOfMonth(1);
+        LocalDate prevMonthEnd = prevMonthStart.withDayOfMonth(prevMonthStart.lengthOfMonth());
+        List<Booking> prevMonthBookings = filterBookingsByDateRange(allBookings, prevMonthStart, prevMonthEnd);
+
+//        Tổng doanh thu toàn hệ thống Chỉ tính booking đã hoàn thành hoặc đã checkout
+//        Đây là doanh thu thực tế đã hoàn tất
         Double totalRevenue = allBookings.stream()
                 .filter(b -> b.getStatus() == BookingStatus.COMPLETED ||
                         b.getStatus() == BookingStatus.CHECKED_OUT)
                 .mapToDouble(Booking::getTotalAmount)
                 .sum();
 
+//        Doanh thu trong khoảng thời gian (thisMonthRevenue) Chỉ tính booking đã PAID
+//        Không cần hoàn thành, chỉ cần đã thanh toán
         Double thisMonthRevenue = periodBookings.stream()
                 .filter(b -> b.getPaymentStatus() == BookingPaymentStatus.PAID)
                 .mapToDouble(Booking::getTotalAmount)
                 .sum();
 
-        LocalDate yearStart = LocalDate.now().withDayOfYear(1);
+//        Doanh thu từ đầu năm
+        LocalDate yearStart = LocalDate.now().withDayOfYear(1); //Lấy ngày 1/1 năm hiện tại
         Double thisYearRevenue = allBookings.stream()
                 .filter(b -> b.getCreatedDate().toLocalDate().isAfter(yearStart.minusDays(1)))
                 .filter(b -> b.getPaymentStatus() == BookingPaymentStatus.PAID)
                 .mapToDouble(Booking::getTotalAmount)
                 .sum();
 
-        Double todayRevenue = bookingRepository.findByCheckInDate(LocalDate.now()).stream()
+//        Doanh thu hôm nay
+        Double todayRevenue = bookingRepository.findByCheckInDate(LocalDate.now()).stream() //Lấy booking có ngày check-in hôm nay chỉ tính booking đã thanh toán
                 .filter(b -> b.getPaymentStatus() == BookingPaymentStatus.PAID)
                 .mapToDouble(Booking::getTotalAmount)
                 .sum();
 
+//        Doanh thu trung bình mỗi ngày
+        //Trung bình doanh thu/ngày trong khoảng đã chọn
         Double averageDailyRevenue = daysDiff > 0
                 ? thisMonthRevenue / daysDiff
                 : 0.0;
 
+//        Doanh thu đã thanh toán vs chưa thanh toán
+//        Bao nhiêu tiền đã thu được
         Double paidRevenue = periodBookings.stream()
                 .filter(b -> b.getPaymentStatus() == BookingPaymentStatus.PAID)
                 .mapToDouble(Booking::getTotalAmount)
                 .sum();
-
+//        Bao nhiêu tiền còn pending
         Double unpaidRevenue = periodBookings.stream()
                 .filter(b -> b.getPaymentStatus() == BookingPaymentStatus.UNPAID)
                 .mapToDouble(Booking::getTotalAmount)
                 .sum();
 
-        // Growth calculation
-        Double prevRevenue = prevPeriodBookings.stream()
+//         Tính tăng trưởng doanh thu
+        Double prevRevenue = prevMonthBookings.stream()
                 .filter(b -> b.getPaymentStatus() == BookingPaymentStatus.PAID)
                 .mapToDouble(Booking::getTotalAmount)
                 .sum();
@@ -287,7 +312,7 @@ public class DashboardServiceImpl implements IDashboardService {
                 ? ((thisMonthRevenue - prevRevenue) / prevRevenue) * 100
                 : 0.0;
 
-        // Revenue by payment method
+        // Doanh thu theo phương thức thanh toán
         Map<String, Double> revenueByPaymentMethod = periodBookings.stream()
                 .filter(b -> b.getPaymentMethod() != null)
                 .filter(b -> b.getPaymentStatus() == BookingPaymentStatus.PAID)
@@ -313,10 +338,10 @@ public class DashboardServiceImpl implements IDashboardService {
     @Override
     public List<RecentBooking> getRecentBookings(Integer limit) {
         return bookingRepository.findAll().stream()
-                .sorted(Comparator.comparing(Booking::getCreatedDate).reversed())
+                .sorted(Comparator.comparing(Booking::getCreatedDate).reversed()) // lấy ngày tạo booking và so sánh theo ngày đảo ngược ngày mới nhất lên đầu
                 .limit(limit)
-                .map(this::mapToRecentBooking)
-                .collect(Collectors.toList());
+                .map(this::mapToRecentBooking) // convert sang dto
+                .collect(Collectors.toList()); //chuyển strean về lít
     }
 
     @Override
@@ -374,12 +399,12 @@ public class DashboardServiceImpl implements IDashboardService {
                 .collect(Collectors.toList());
     }
 
-
+//  lọc danh sách booking theo khoảng ngày (từ startDate đến endDate)
     private List<Booking> filterBookingsByDateRange(
             List<Booking> bookings, LocalDate startDate, LocalDate endDate) {
         return bookings.stream()
-                .filter(b -> !b.getCreatedDate().toLocalDate().isBefore(startDate))
-                .filter(b -> !b.getCreatedDate().toLocalDate().isAfter(endDate))
+                .filter(b -> !b.getCreatedDate().toLocalDate().isBefore(startDate)) // không trước startDate -> createdDate >= startDate
+                .filter(b -> !b.getCreatedDate().toLocalDate().isAfter(endDate)) // không sau endDate -> createdDate <= endDate
                 .collect(Collectors.toList());
     }
 
@@ -418,7 +443,7 @@ public class DashboardServiceImpl implements IDashboardService {
         List<Booking> bookings = bookingRepository.findAll().stream()
                 .filter(b -> !b.getCreatedDate().toLocalDate().isBefore(startDate))
                 .filter(b -> !b.getCreatedDate().toLocalDate().isAfter(endDate))
-                .filter(b -> b.getPaymentStatus() == BookingPaymentStatus.PAID)
+                .filter(b -> b.getPaymentStatus() == BookingPaymentStatus.PAID) //Chỉ lấy booking đã thanh toán doanh thu thực nhận
                 .collect(Collectors.toList());
 
         if ("DAY".equalsIgnoreCase(groupBy)) {
@@ -595,10 +620,10 @@ public class DashboardServiceImpl implements IDashboardService {
                 ? totalSpent / totalBookings
                 : 0.0;
 
-        // Simple loyalty points calculation (1 point per 10,000 VND spent)
+        // Tính điểm tích lũy đơn giản (1 điểm trên 10,000 VND đã chi)
         Integer loyaltyPoints = (int) (totalSpent / 10000);
 
-        // Membership tier based on bookings
+        // Hạng member dựa trên bookings
         String membershipTier = getMembershipTier(completedBookings);
 
         return UserStats.builder()

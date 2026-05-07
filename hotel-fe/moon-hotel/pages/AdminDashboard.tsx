@@ -278,7 +278,7 @@ export const AdminDashboard: React.FC = () => {
   };
 
   const roomStatusData = [
-    { name: "Đã đặt", value: roomStats.occupiedRooms, color: "#4F46E5" }, // indigo-600
+    { name: "Đang sử dụng", value: roomStats.occupiedRooms, color: "#4F46E5" }, // indigo-600
     { name: "Trống", value: roomStats.availableRooms, color: "#10B981" }, // emerald-500
     {
       name: "Bảo trì",
@@ -545,9 +545,9 @@ export const AdminDashboard: React.FC = () => {
         ) : (
           <>
             <StatCard
-              title="Doanh thu tổng"
-              value={`${(data?.revenueStats?.totalRevenue || 0).toLocaleString()} VND`}
-              subValue={`Thực thu: ${(data?.revenueStats?.paidRevenue || 0).toLocaleString()} VND`}
+              title="Doanh thu thực tế"
+              value={`${(data?.revenueStats?.paidRevenue || 0).toLocaleString()} VND`}
+              subValue={`Doanh thu tổng: ${(data?.revenueStats?.totalRevenue || 0).toLocaleString()} VND`}
               icon={DollarSign}
               trend="up"
               trendValue={`${data?.revenueStats?.revenueGrowthRate || 0}%`}
@@ -562,6 +562,7 @@ export const AdminDashboard: React.FC = () => {
               trendValue={`${data?.bookingStats?.bookingGrowthRate || 0}%`}
               color="bg-blue-500"
             />
+
             <StatCard
               title="Check-in Hôm nay"
               value={(data?.overviewStats?.todayCheckIns || 0).toString()}

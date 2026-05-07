@@ -38,7 +38,7 @@ public class DashboardController {
     @PostMapping("/admin/filter")
     @PreAuthorize("hasAnyRole('STAFF', 'ADMIN')")
     @Operation(summary = "Lấy admin dashboard với bộ lọc",
-            description = "Lấy dữ liệu dashboard tổng quan cho admin hoặc staff với các bộ lọc tùy chọn.")
+            description = "Lấy dữ liệu dashboard tổng quan cho admin với các bộ lọc tùy chọn.")
     public ResponseEntity<ApiResponse> getAdminDashboardWithFilter(
             @RequestBody DashboardFilterRequest filter) {
 

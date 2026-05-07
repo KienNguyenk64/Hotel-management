@@ -92,6 +92,11 @@ export const AdminBookings: React.FC = () => {
   });
   const [addingService, setAddingService] = useState(false);
 
+  // Export States
+  const [exportStartDate, setExportStartDate] = useState<string>(getToday());
+  const [exportEndDate, setExportEndDate] = useState<string>(getToday());
+  const [exporting, setExporting] = useState(false);
+
   // --- Fetch Data ---
   const fetchStats = async () => {
     try {
@@ -296,50 +301,109 @@ export const AdminBookings: React.FC = () => {
     }
   };
 
-  const handleExportCSV = () => {
-    if (bookings.length === 0) {
-      showNotification("Không có dữ liệu để xuất.", "error");
-      return;
-    }
-    const headers = [
-      "Mã Booking",
-      "Khách hàng",
-      "SĐT",
-      "Phòng",
-      "Check-in",
-      "Check-out",
-      "Tổng tiền",
-      "Thanh toán",
-      "Trạng thái",
-    ];
-    const csvContent = [
-      headers.join(","),
-      ...bookings.map((b) =>
-        [
-          b.bookingNumber,
-          `"${b.userFullName}"`,
-          `'${b.userPhoneNumber}`,
-          `"${b.roomName} (${b.roomNumber})"`,
-          b.checkInDate,
-          b.checkOutDate,
-          b.totalAmount,
-          b.paymentStatus,
-          b.status,
-        ].join(","),
-      ),
-    ].join("\n");
+  const handleExportCSV = async () => {
+    setExporting(true);
+    try {
+      let allData: Booking[] = [];
+      let currentPage = 0;
+      let hasMore = true;
 
-    const blob = new Blob(["\uFEFF" + csvContent], {
-      type: "text/csv;charset=utf-8;",
-    });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", `bookings_export_${getToday()}.csv`);
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      // Lặp qua tất cả các trang để lấy toàn bộ dữ liệu trong khoảng thời gian Check-in
+      while (hasMore) {
+        const criteria: BookingSearchCriteria = {
+          page: currentPage,
+          size: 100, // Kích thước trang an toàn
+          sortBy: "createdDate",
+          sortOrder: "desc",
+          checkInDateFrom: exportStartDate,
+          checkInDateTo: exportEndDate,
+        };
+
+        const response = await bookingApi.search(criteria);
+
+        if (response.data.status === "success" && response.data.data.content.length > 0) {
+          allData = [...allData, ...response.data.data.content];
+          if (currentPage >= response.data.data.totalPages - 1) {
+            hasMore = false;
+          } else {
+            currentPage++;
+          }
+        } else {
+          hasMore = false;
+        }
+      }
+
+      if (allData.length === 0) {
+        showNotification("Không có dữ liệu đặt phòng trong khoảng thời gian Check-in này.", "error");
+        setExporting(false);
+        return;
+      }
+
+      const formatDateTime = (dateString: string) => {
+        if (!dateString) return "";
+        const d = new Date(dateString);
+        return `${d.toLocaleDateString('vi-VN')} ${d.toLocaleTimeString('vi-VN')}`;
+      };
+
+      const headers = [
+        "Mã Booking",
+        "Khách hàng",
+        "Số điện thoại",
+        "CCCD/CMND",
+        "Phòng",
+        "Ngày Check-in",
+        "Ngày Check-out",
+        "Số khách",
+        "Ngày tạo đơn",
+        "Tổng tiền (VND)",
+        "Đã thanh toán (VND)",
+        "Trạng thái thanh toán",
+        "Trạng thái Booking",
+        "Ghi chú",
+      ];
+
+      const csvContent = [
+        headers.join(","),
+        ...allData.map((b: Booking) =>
+          [
+            `"${b.bookingNumber}"`,
+            `"${b.userFullName}"`,
+            `"${b.userPhoneNumber || ''}"`,
+            `"${b.primaryGuest?.cccdNumber || ''}"`,
+            `"${b.roomName} (${b.roomNumber})"`,
+            `"${b.checkInDate}"`,
+            `"${b.checkOutDate}"`,
+            `"${b.numberOfGuests} lớn, ${b.numberOfChildren} trẻ"`,
+            `"${formatDateTime(b.createdDate)}"`,
+            b.totalAmount,
+            b.depositAmount,
+            `"${PaymentStatusDisplay[b.paymentStatus] || b.paymentStatus}"`,
+            `"${BookingStatusDisplay[b.status] || b.status}"`,
+            `"${b.specialRequests || ''}"`,
+          ].join(","),
+        ),
+      ].join("\n");
+
+      // Thêm BOM để Excel đọc được tiếng Việt UTF-8
+      const blob = new Blob(["\uFEFF" + csvContent], {
+        type: "text/csv;charset=utf-8;",
+      });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `BaoCao_DatPhong_${exportStartDate}_den_${exportEndDate}.csv`);
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showNotification(`Xuất thành công ${allData.length} bản ghi!`, "success");
+    } catch (error) {
+      console.error("Export failed", error);
+      showNotification("Có lỗi xảy ra khi xuất dữ liệu", "error");
+    } finally {
+      setExporting(false);
+    }
   };
 
   const setDateFilterMode = (mode: "TODAY" | "ALL") => {
@@ -433,11 +497,10 @@ export const AdminBookings: React.FC = () => {
     <div className="animate-fade-in max-w-[1600px] mx-auto p-4 md:p-6 font-sans text-slate-800 pb-20">
       {notification && (
         <div
-          className={`fixed top-6 right-6 z-[60] px-6 py-4 rounded-xl shadow-2xl border flex items-center gap-3 animate-slide-in-right ${
-            notification.type === "success"
-              ? "bg-white border-emerald-100 text-emerald-700"
-              : "bg-white border-rose-100 text-rose-700"
-          }`}
+          className={`fixed top-6 right-6 z-[60] px-6 py-4 rounded-xl shadow-2xl border flex items-center gap-3 animate-slide-in-right ${notification.type === "success"
+            ? "bg-white border-emerald-100 text-emerald-700"
+            : "bg-white border-rose-100 text-rose-700"
+            }`}
         >
           <div
             className={`p-1 rounded-full ${notification.type === "success" ? "bg-emerald-100" : "bg-rose-100"}`}
@@ -474,12 +537,36 @@ export const AdminBookings: React.FC = () => {
               </span>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row items-center gap-3 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm">
+            {/* <div className="flex items-center gap-2 px-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Từ:</span>
+              <input
+                type="date"
+                value={exportStartDate}
+                onChange={(e) => setExportStartDate(e.target.value)}
+                className="bg-transparent text-sm font-bold text-slate-700 outline-none w-[110px] cursor-pointer"
+              />
+            </div> */}
+            {/* <div className="hidden sm:block w-px h-6 bg-slate-100"></div> */}
+            {/* <div className="flex items-center gap-2 px-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Đến:</span>
+              <input
+                type="date"
+                value={exportEndDate}
+                onChange={(e) => setExportEndDate(e.target.value)}
+                className="bg-transparent text-sm font-bold text-slate-700 outline-none w-[110px] cursor-pointer"
+              />
+            </div> */}
             <button
               onClick={handleExportCSV}
-              className="bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl font-bold hover:bg-slate-50 transition-colors shadow-sm flex items-center gap-2 text-sm"
+              disabled={exporting}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl font-bold transition-all shadow-md shadow-indigo-200 flex items-center gap-2 text-sm disabled:opacity-50"
             >
-              <Download size={16} /> Xuất Báo Cáo
+              {exporting ? (
+                <><Loader2 size={16} className="animate-spin" /> Xử lý...</>
+              ) : (
+                <><Download size={16} /> Xuất Dữ Liệu</>
+              )}
             </button>
           </div>
         </div>
@@ -936,11 +1023,10 @@ export const AdminBookings: React.FC = () => {
                           <button
                             key={`page-${p}`}
                             onClick={() => setPage(p as number)}
-                            className={`min-w-[36px] h-9 px-2 rounded-lg text-sm font-bold transition-colors flex items-center justify-center ${
-                              page === p
-                                ? "bg-indigo-600 text-white shadow-md shadow-indigo-200 border-transparent"
-                                : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
-                            }`}
+                            className={`min-w-[36px] h-9 px-2 rounded-lg text-sm font-bold transition-colors flex items-center justify-center ${page === p
+                              ? "bg-indigo-600 text-white shadow-md shadow-indigo-200 border-transparent"
+                              : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                              }`}
                           >
                             {(p as number) + 1}
                           </button>
@@ -1153,7 +1239,7 @@ export const AdminBookings: React.FC = () => {
                     </div>
                     <div className="divide-y divide-slate-100">
                       {selectedBooking.additionalCharges &&
-                      selectedBooking.additionalCharges.length > 0 ? (
+                        selectedBooking.additionalCharges.length > 0 ? (
                         selectedBooking.additionalCharges.map((charge, idx) => (
                           <div
                             key={idx}

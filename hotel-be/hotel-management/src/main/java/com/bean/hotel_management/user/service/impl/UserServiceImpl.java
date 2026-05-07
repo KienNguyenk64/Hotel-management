@@ -49,6 +49,7 @@ public class UserServiceImpl implements IUserService {
         String newFullName = request.getFullName();
         String newUsername = request.getUsername();
         String newEmail = request.getEmail();
+        String newAddress = request.getAddress();
 
         if (newPhoneNumber != null && !newPhoneNumber.isBlank() && !newPhoneNumber.equals(user.getPhoneNumber())) {
             userUtils.validateDuplicatePhoneNumber(newPhoneNumber);
@@ -65,6 +66,11 @@ public class UserServiceImpl implements IUserService {
             userUtils.validateDuplicateEmail(newEmail);
             user.setEmail(newEmail);
         }
+
+        if(newAddress != null && !newAddress.isBlank()){
+            user.setAddress(newAddress);
+        }
+
         iUserRepository.save(user);
         return userMapper.mapToUserResponse(user);
     }

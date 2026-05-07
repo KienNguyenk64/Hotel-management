@@ -40,8 +40,10 @@ export const AdminReviews: React.FC = () => {
     try {
       // Fetch rooms for filter dropdown
       const roomsRes = await roomApi.getAll(0, 100);
+      let currentRooms = rooms;
       if (roomsRes.data.status === "success") {
-        setRooms(roomsRes.data.data.content);
+        currentRooms = roomsRes.data.data.content;
+        setRooms(currentRooms);
       }
 
       // Build filter params
@@ -65,7 +67,7 @@ export const AdminReviews: React.FC = () => {
       const reviewsData: ReviewResponse[] = [];
 
       // Fetch reviews from each room
-      for (const room of rooms) {
+      for (const room of currentRooms) {
         try {
           const roomDetail = await roomApi.getById(room.id);
           if (
@@ -298,9 +300,9 @@ export const AdminReviews: React.FC = () => {
             </span>
             {[
               { value: "All", label: "Tất cả" },
-              { value: "PENDING", label: "Chờ duyệt" },
-              { value: "APPROVED", label: "Đã duyệt" },
-              { value: "REJECTED", label: "Đã ẩn" },
+              // { value: "PENDING", label: "Chờ duyệt" },
+              // { value: "APPROVED", label: "Đã duyệt" },
+              // { value: "REJECTED", label: "Đã ẩn" },
             ].map((f) => (
               <button
                 key={f.value}
