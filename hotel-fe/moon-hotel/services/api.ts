@@ -598,7 +598,7 @@ export const adminUserApi = {
   getById: (id: string) => api.get<ApiResponse<User>>(`/users/admin/${id}`),
 
   addUser: (data: Partial<User> & { password?: string }) =>
-    api.post<ApiResponse<User>>("/users/admin", data),
+    api.post<ApiResponse<User>>("/users/admin/add", data),
 
   updateById: (id: string, data: Partial<User>) =>
     api.put<ApiResponse<User>>(`/users/admin/${id}`, data),
@@ -720,8 +720,11 @@ export const paymentApi = {
     method: string;
   }) => api.post<ApiResponse<any>>("/payments/process", data),
 
-  createVnPayUrl: (data: { bookingId: string }) => 
-    api.post<ApiResponse<{ vnpayUrl: string }>>("/payments/vnpay/create-url", data),
+  createVnPayUrl: (data: { bookingId: string }) =>
+    api.post<ApiResponse<{ vnpayUrl: string }>>(
+      "/payments/vnpay/create-url",
+      data,
+    ),
 
   simulatePayment: (bookingId: string) =>
     new Promise<ApiResponse<any>>((resolve) => {

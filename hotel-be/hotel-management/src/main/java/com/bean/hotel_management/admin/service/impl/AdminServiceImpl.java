@@ -47,7 +47,7 @@ public class AdminServiceImpl implements IAdminService {
 
         Pageable pageable = createPageable(request);
 
-        // Get all users and filter
+        // Lấy danh sách user và lọc
         List<User> allUsers = userRepository.findAll();
         List<User> filteredUsers = allUsers.stream()
                 .filter(adminSpecification.createPredicate(request))
@@ -118,7 +118,7 @@ public class AdminServiceImpl implements IAdminService {
 
         User user = findUserById(id);
 
-        // Validate duplicates for changed fields
+        // Xác minh trùng lặp cho các trường thay đổi
         validateDuplicatesForUpdate(user, request);
 
         // Update fields

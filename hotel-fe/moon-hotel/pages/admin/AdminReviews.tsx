@@ -74,7 +74,11 @@ export const AdminReviews: React.FC = () => {
             roomDetail.data.status === "success" &&
             roomDetail.data.data.reviews
           ) {
-            reviewsData.push(...roomDetail.data.data.reviews);
+            const normalizedReviews = roomDetail.data.data.reviews.map((r: any) => ({
+              ...r,
+              reviewStatus: (r.reviewStatus || r.status || "PENDING").toUpperCase(),
+            }));
+            reviewsData.push(...normalizedReviews);
           }
         } catch (err) {
           console.error(`Error fetching reviews for room ${room.id}:`, err);
@@ -159,7 +163,10 @@ export const AdminReviews: React.FC = () => {
 
       if (response.data.status === "success") {
         setReviews((prev) =>
-          prev.map((r) => (r.id === reviewId ? response.data.data : r)),
+          prev.map((r) => (r.id === reviewId ? {
+            ...response.data.data,
+            reviewStatus: (response.data.data.reviewStatus || "PENDING").toUpperCase(),
+          } : r)),
         );
         setReplyText({ ...replyText, [reviewId]: "" });
         setOpenReplyId(null);
@@ -300,9 +307,9 @@ export const AdminReviews: React.FC = () => {
             </span>
             {[
               { value: "All", label: "Tất cả" },
-              // { value: "PENDING", label: "Chờ duyệt" },
-              // { value: "APPROVED", label: "Đã duyệt" },
-              // { value: "REJECTED", label: "Đã ẩn" },
+              { value: "PENDING", label: "Chờ duyệt" },
+              { value: "APPROVED", label: "Đã duyệt" },
+              { value: "REJECTED", label: "Đã ẩn" },
             ].map((f) => (
               <button
                 key={f.value}

@@ -43,7 +43,7 @@ public class ReviewMapper {
 
     public ReviewResponse entityToResponse(Review review) {
         List<Reply> replies = new ArrayList<>();
-        if (!review.getReplyIds().isEmpty()) {
+        if (!review.getReplyIds().isEmpty()) { //Kiểm tra review có reply không
             for (String replyId : review.getReplyIds()) {
                 iReplyRepository.findById(replyId).ifPresent(replies::add);
             }

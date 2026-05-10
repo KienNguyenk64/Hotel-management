@@ -402,7 +402,7 @@ export const AdminGuests: React.FC = () => {
                 value={filters.role || ""}
                 onChange={(e) => handleFilterChange("role", e.target.value)}
               >
-                <option value="">Tất cả vai trò</option>
+                <option value="ALL">Tất cả vai trò</option>
                 <option value="ADMIN">Quản trị viên</option>
                 {/* <option value="STAFF">Nhân viên</option> */}
                 <option value="USER">Khách hàng</option>
@@ -611,13 +611,13 @@ export const AdminGuests: React.FC = () => {
                                 <Lock size={16} />
                               )}
                             </button>
-                            <button
+                            {/* <button
                               onClick={(e) => handleDeleteUser(user, e)}
                               className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
                               title="Xóa người dùng"
                             >
                               <Trash2 size={16} />
-                            </button>
+                            </button> */}
 
                             <div className="w-px h-4 bg-slate-200 mx-1"></div>
 

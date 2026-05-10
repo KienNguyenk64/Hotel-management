@@ -67,6 +67,8 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success("Xoá user thành công", response));
     }
 
+
+
     @PutMapping("/{id}/activate")
     @PreAuthorize("hasAnyRole('STAFF', 'ADMIN')")
     @Operation(summary = "Kích hoạt tài khoản user theo ID")
